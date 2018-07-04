@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+$main-font-bold: "700";
+$main-font-normal: "400";
+
+h1 {
+   font-size: 0.85em; 
+   color: $large-font-color; 
+}
+
+body {
+    font-family: 'Roboto', sans-serif; 
+    color: $main-font-color;
+    font-weight: $main-font-normal;
+}
+
+h3 {
+    font-size: 2.6em; 
+    font-weight: $main-font-bold;
+}
+
+.font-it {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: $main-font-bold;
+}
+
+
+.fz-large {
+    font-size: 1.5px;
+}
+
+.fz-normal {
+    font-size: 1em;
+}
+
+.fz-mid {
+    font-size: 0.7em;
+}
+
+.fz-sm {
+    font-size: 0.5em;
+}

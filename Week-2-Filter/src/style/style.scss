@@ -1,0 +1,14 @@
+@import "./color.scss";
+@import "./font.scss";
+@import "./head.scss";
+@import "./searchbox.scss";
+@import "./main.scss";
+@import "./resultHeader.scss";
+@import "./resultItem.scss";
+@import "./pager.scss";
+@import "./sidebar.scss";
+@import "./media-source.scss";
+
+body {
+    background: $body-bg-color;
+}
