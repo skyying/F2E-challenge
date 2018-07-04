@@ -2,15 +2,15 @@ import React, {Component} from "react";
 import {Checkbox} from "antd";
 
 const CheckboxGroup = Checkbox.Group;
-const zoneOptions = ["zone1", "zone2", "zone3"];
+const zoneList = ["zone1", "zone2", "zone3"];
 
 export default class ZoneCheckboxGruopFilter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checkedList: zoneOptions,
-            indeterminate: true,
-            checkAll: true,
+            checkedList: zoneList,
+            indeterminate: false,
+            checkAll: false,
         };
         this.onChange = this.onChange.bind(this);
         this.onCheckAllChange = this.onCheckAllChange.bind(this);
@@ -20,35 +20,36 @@ export default class ZoneCheckboxGruopFilter extends Component {
             checkedList,
             indeterminate:
                 !!checkedList.length &&
-                checkedList.length < zoneOptions.length,
-            checkAll: checkedList.length === zoneOptions.length,
+                checkedList.length < this.props.zoneList.length,
+            checkAll: checkedList.length === this.props.zoneList.length,
         });
-        console.log("onChange", this.state.checkedList);
+
+        this.props.onChange(checkedList);
     };
     onCheckAllChange(e){
+        let list =e.target.checked ? this.props.zoneList : [];
         this.setState({
-            checkedList: e.target.checked ? zoneOptions : [],
+            checkedList: list,
             indeterminate: false,
             checkAll: e.target.checked,
         });
-        console.log("onCheckAll", this.state.checkList);
+        this.props.onChange(list);
     };
     render() {
-        const {checkedList, indeterminate, checkAll} = this.state;
         return (
             <div>
                 <div>
                     <Checkbox
-                        indeterminate={indeterminate}
+                        indeterminate={this.state.indeterminate}
                         onChange={this.onCheckAllChange}
-                        checked={checkAll}>
+                        checked={this.state.checkAll}>
                         Select All
                     </Checkbox>
                 </div>
                 <br />
                 <CheckboxGroup
-                    options={zoneOptions}
-                    value={checkedList}
+                    options={this.props.zoneList}
+                    value={this.state.checkedList}
                     onChange={this.onChange}
                 />
             </div>

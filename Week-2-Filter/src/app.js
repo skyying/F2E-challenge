@@ -16,38 +16,51 @@ const API = {
 };
 
 const AllResult = [];
-
 const tagList = ["tag name 01", "tag name 02"];
+const zoneList = new Set();
+
+
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoaded: false,
+            current: 1,
+            selectedZones: [],
+            isFree: false,
         };
         this.fetchData = this.fetchData.bind(this);
+        this.handleChangeZone = this.handleChangeZone.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
     }
     componentDidMount() {
         this.fetchData();
     }
+    handleChangePage(page){
+        this.setState({current: page});
+    }
+    handleChangeZone(zone){
+        this.setState({
+            selectedZones: zone,
+            current: 1,
+        }) 
+    }
     fetchData() {
-        let zone = new Set();
         fetch(API.url)
             .then(response => response.json())
             .then(data => data.result.records)
             .then(records =>
                 records.map(result => {
+                    zoneList.add(result.Zone)
                     AllResult.push({
-                        name: result.Name,
-                        ticketInfo: result.Ticketinfo,
-                        pictureURL: result.Picture1,
-                        Address: result.Add,
-                        OpenTime: result.Opentime,
-                        tel: result.Tel,
-                        zone: result.Zone,
-                        id: result.Id,
+                        url: result.Picture1,
+                        title: result.Name,
                         description: result.Description,
-                        changeTime: result.Changetime,
-                        website: result.Website,
+                        zone: result.Zone,
+                        tagList: ["example 1", "example2"],
+                        OpenTime: result.Opentime,
+                        ticketInfo: result.Ticketinfo,
+                        isFree: !!result.Ticketinfo.length,
                     });
                 }),
             )
@@ -59,24 +72,32 @@ class App extends Component {
             .catch(error => console.log("failed to parse: ", error));
     }
     render() {
+
         if (this.state.isLoaded) {
-            console.log(AllResult);
+            console.log("all result", AllResult);
         }
-        const currentPageResults = Array.from({length: 10}).fill({
-            title: "title",
-            description: "description",
-            host: "host",
-            tagList: tagList,
-            city: "city",
-            date: "date",
-        });
+
+        const filterResults = () => {
+            let results = AllResult;
+            if(this.state.isFree){
+                results = AllResult.filter((result, index)=> result.ticketInfo !== "");
+            }
+            return results.filter((result, i) => this.state.selectedZones.indexOf(result.zone)!==-1 );
+        };
+
+        let total = filterResults().length;
+
+        const currentPageResult = () => {
+            let results = filterResults();
+            if(results.length === 0 ) return [];
+            return results.filter( (result, index) => index>= this.state.current && index <= this.state.current + 10 );
+        }
 
         const results = list =>
             list.map((data, i) => (
                 <ResultItem key={"result.item" + i} data={data} />
-            ));
+        ));
 
-        console.log(results(currentPageResults));
         return (
             <div>
                 <div>
@@ -91,15 +112,15 @@ class App extends Component {
                         />
                     </SideViewPanel>
                     <SideViewPanel title={"Zones"}>
-                        <ZoneCheckboxGruopFilter />
+                        <ZoneCheckboxGruopFilter onChange={this.handleChangeZone} zoneList={[...zoneList]} />
                     </SideViewPanel>
                 </div>
                 <div>
-                    <h3>Expolre {10} destinations</h3>
+                    <h3>Expolre {total} destinations</h3>
                     <TagListView tagList={tagList} closable={true} />
                 </div>
-                <div>{results(currentPageResults)}</div>
-                <Pagination defaultCurrent={1} total={50} />
+                <div>{results(currentPageResult())}</div>
+                <Pagination defaultCurrent={this.current} onChange={this.handleChangePage} total={total} />
             </div>
         );
     }
