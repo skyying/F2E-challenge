@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import ReactDOM from "react-dom";
 import {Input} from "antd";
 import PriceSelector from "./Components/PriceSelector.js";
 import SideViewPanel from "./Components/SideViewPanel.js";
@@ -7,6 +6,7 @@ import ZoneCheckboxGruopFilter from "./Components/ZoneCheckboxGroup.js";
 import TagListView from "./Components/TagListView.js";
 import ResultItem from "./Components/ResultItem.js";
 import {Pagination} from "antd";
+import ZoneList from "./Components/ZoneList.js";
 const Search = Input.Search;
 const priceSelectorOption = ["All", "Free"];
 
@@ -16,111 +16,167 @@ const API = {
 };
 
 const AllResult = [];
-const tagList = ["tag name 01", "tag name 02"];
-const zoneList = new Set();
-
-
+const freeTag = ["免費參觀"];
 class App extends Component {
-    constructor(props) {
-        super(props);
+    constructor( props ) {
+        super( props );
         this.state = {
             isLoaded: false,
             current: 1,
-            selectedZones: [],
+            selectedZones: ZoneList,
+            text: "",
             isFree: false,
         };
-        this.fetchData = this.fetchData.bind(this);
-        this.handleChangeZone = this.handleChangeZone.bind(this);
-        this.handleChangePage = this.handleChangePage.bind(this);
+        this.fetchData = this.fetchData.bind( this );
+        this.handleChangeZone = this.handleChangeZone.bind( this );
+        this.handleChangePage = this.handleChangePage.bind( this );
+        this.handlePriceChange = this.handlePriceChange.bind( this );
+        this.handleSearchText = this.handleSearchText.bind( this );
     }
     componentDidMount() {
         this.fetchData();
     }
-    handleChangePage(page){
-        this.setState({current: page});
+    handleChangePage( page ) {
+        this.setState( {current: page} );
     }
-    handleChangeZone(zone){
-        this.setState({
+    handleChangeZone( zone ) {
+        this.setState( {
             selectedZones: zone,
             current: 1,
-        }) 
+        } );
+    }
+    handleSearchText( text ) {
+        this.setState( {
+            text: text,
+        } );
+    }
+    handlePriceChange( isFree ) {
+        this.setState( {
+            isFree: isFree === "Free",
+        } );
     }
     fetchData() {
-        fetch(API.url)
-            .then(response => response.json())
-            .then(data => data.result.records)
-            .then(records =>
-                records.map(result => {
-                    zoneList.add(result.Zone)
-                    AllResult.push({
+        fetch( API.url )
+            .then( response => response.json() )
+            .then( data => data.result.records )
+            .then( records =>
+                records.map( result => {
+                    AllResult.push( {
                         url: result.Picture1,
                         title: result.Name,
                         description: result.Description,
                         zone: result.Zone,
-                        tagList: ["example 1", "example2"],
                         OpenTime: result.Opentime,
                         ticketInfo: result.Ticketinfo,
-                        isFree: !!result.Ticketinfo.length,
-                    });
-                }),
+                    } );
+                } ),
             )
-            .then(records => {
-                this.setState({
-                    isLoaded: true,
-                });
-            })
-            .catch(error => console.log("failed to parse: ", error));
+            .then( records => {
+                this.setState( {isLoaded: true} );
+            } )
+            .catch( error => console.log( "failed to parse: ", error ) );
     }
-    render() {
 
-        if (this.state.isLoaded) {
-            console.log("all result", AllResult);
+    render() {
+        if ( this.state.isLoaded ) {
+            console.log( AllResult );
         }
 
         const filterResults = () => {
             let results = AllResult;
-            if(this.state.isFree){
-                results = AllResult.filter((result, index)=> result.ticketInfo !== "");
+            if ( this.state.isFree ) {
+                results = AllResult.filter( result => result.ticketInfo !== "" );
             }
-            return results.filter((result, i) => this.state.selectedZones.indexOf(result.zone)!==-1 );
+
+            results = results.filter(
+                result => this.state.selectedZones.indexOf( result.zone ) !== -1,
+            );
+
+            const isMatch = obj => {
+                let keys = Object.keys( obj );
+                let i = 0,
+                    len = keys.length;
+                for ( ; i < len; i++ ) {
+                    let key = keys[i];
+                    if ( key !== "url" ) {
+                        let item = obj[key];
+                        if ( item.search( this.state.text ) !== -1 ) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            console.log(
+                "finalResult",
+                results.filter( result => isMatch( result ) ),
+            );
+            return (
+                ( this.state.text &&
+                    results.filter( result => isMatch( result ) ) ) ||
+                results
+            );
         };
 
         let total = filterResults().length;
 
         const currentPageResult = () => {
             let results = filterResults();
-            if(results.length === 0 ) return [];
-            return results.filter( (result, index) => index>= this.state.current && index <= this.state.current + 10 );
-        }
+            return (
+                ( results.length &&
+                    results.filter(
+                        ( result, index ) =>
+                            index >= ( this.state.current - 1 ) * 10 &&
+                            index < this.state.current * 10 - 1,
+                    ) ) ||
+                []
+            );
+        };
 
         const results = list =>
-            list.map((data, i) => (
+            list.map( ( data, i ) => (
                 <ResultItem key={"result.item" + i} data={data} />
-        ));
+            ) );
 
         return (
             <div>
                 <div>
                     <h1> logo name </h1>
-                    <Search placeholder="Go where?" />
+                    <form action="">
+                        <Search
+                            placeholder="Go where?"
+                            onSearch={this.handleSearchText}
+                            enterButton
+                        />
+                    </form>
                 </div>
                 <div>
                     <SideViewPanel title={"Price"}>
                         <PriceSelector
+                            onChange={this.handlePriceChange}
                             options={priceSelectorOption}
                             defaultValue={priceSelectorOption[0]}
                         />
                     </SideViewPanel>
                     <SideViewPanel title={"Zones"}>
-                        <ZoneCheckboxGruopFilter onChange={this.handleChangeZone} zoneList={[...zoneList]} />
+                        <ZoneCheckboxGruopFilter
+                            onChange={this.handleChangeZone}
+                        />
                     </SideViewPanel>
                 </div>
                 <div>
                     <h3>Expolre {total} destinations</h3>
-                    <TagListView tagList={tagList} closable={true} />
+                    <TagListView
+                        tagList={this.state.text && [this.state.text]}
+                        closable={true}
+                    />
                 </div>
-                <div>{results(currentPageResult())}</div>
-                <Pagination defaultCurrent={this.current} onChange={this.handleChangePage} total={total} />
+                <div>{results( currentPageResult() )}</div>
+                <Pagination
+                    defaultCurrent={this.current}
+                    onChange={this.handleChangePage}
+                    total={total}
+                />
             </div>
         );
     }

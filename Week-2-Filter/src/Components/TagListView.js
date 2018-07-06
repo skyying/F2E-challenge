@@ -2,21 +2,26 @@ import React, {Component} from "react";
 import {Tag} from "antd";
 import PropTypes from "prop-types";
 
-const TagListView = ({tagList, closable}) => {
-    console.log("tagList", tagList);
-    let tags =
-        tagList.length >= 0 ? (
+const TagListView = ( {tagList, closable} ) => {
+    return (
+        ( tagList.length && (
             <div>
-                {tagList.map((tag, i) => (
-                    <Tag closable={closable} key={tag + "_" + i}> {tag} </Tag>
-                ))}{" "}
+                {tagList.map( ( tag, i ) => (
+                    <Tag closable={closable} key={tag + "_" + i}>
+                        {" "}
+                        {tag}{" "}
+                    </Tag>
+                ) )}{" "}
             </div>
-        ) : null;
-    return tags;
+        ) ) ||
+        []
+    );
 };
 
 TagListView.propTypes = {
     tagList: PropTypes.array,
+    tagList: PropTypes.any,
+
 };
 
 export default TagListView;
