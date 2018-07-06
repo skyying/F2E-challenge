@@ -142,13 +142,11 @@ class App extends Component {
             <div>
                 <div>
                     <h1> logo name </h1>
-                    <form action="">
                         <Search
                             placeholder="Go where?"
                             onSearch={this.handleSearchText}
                             enterButton
                         />
-                    </form>
                 </div>
                 <div>
                     <SideViewPanel title={"Price"}>
