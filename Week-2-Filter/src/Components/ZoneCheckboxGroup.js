@@ -1,40 +1,40 @@
 import React, {Component} from "react";
 import {Checkbox} from "antd";
+import ZoneList from "./ZoneList.js";
 
 const CheckboxGroup = Checkbox.Group;
-const zoneList = ["zone1", "zone2", "zone3"];
 
 export default class ZoneCheckboxGruopFilter extends Component {
-    constructor(props) {
-        super(props);
+    constructor( props ) {
+        super( props );
         this.state = {
-            checkedList: zoneList,
+            checkedList: ZoneList,
             indeterminate: false,
-            checkAll: false,
+            checkAll: true,
         };
-        this.onChange = this.onChange.bind(this);
-        this.onCheckAllChange = this.onCheckAllChange.bind(this);
+        this.onChange = this.onChange.bind( this );
+        this.onCheckAllChange = this.onCheckAllChange.bind( this );
     }
-    onChange(checkedList){
-        this.setState({
+    onChange( checkedList ){
+        this.setState( {
             checkedList,
             indeterminate:
                 !!checkedList.length &&
-                checkedList.length < this.props.zoneList.length,
-            checkAll: checkedList.length === this.props.zoneList.length,
-        });
+                checkedList.length < ZoneList.length,
+            checkAll: checkedList.length === ZoneList.length,
+        } );
 
-        this.props.onChange(checkedList);
-    };
-    onCheckAllChange(e){
-        let list =e.target.checked ? this.props.zoneList : [];
-        this.setState({
+        this.props.onChange( checkedList );
+    }
+    onCheckAllChange( e ){
+        let list =e.target.checked ? ZoneList : [];
+        this.setState( {
             checkedList: list,
             indeterminate: false,
             checkAll: e.target.checked,
-        });
-        this.props.onChange(list);
-    };
+        } );
+        this.props.onChange( list );
+    }
     render() {
         return (
             <div>
@@ -48,7 +48,7 @@ export default class ZoneCheckboxGruopFilter extends Component {
                 </div>
                 <br />
                 <CheckboxGroup
-                    options={this.props.zoneList}
+                    options={ZoneList}
                     value={this.state.checkedList}
                     onChange={this.onChange}
                 />

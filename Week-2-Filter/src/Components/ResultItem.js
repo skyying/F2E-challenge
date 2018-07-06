@@ -18,7 +18,7 @@ InfoList.propsTypes ={
 
 
 const ResultItem = ({
-    data: {url, title, description, zone, tagList, openTime, ticketInfo},
+    data: {url, title, description, zone, openTime, ticketInfo},
 }) => (
     <div>
         <img src={url}/>
@@ -26,7 +26,6 @@ const ResultItem = ({
         <p>{description}</p>
         <div>
             <h5>{zone}</h5>
-            <TagListView tagList={tagList} closable={false} />
             <InfoList city={openTime} date={ticketInfo} />
         </div>
     </div>

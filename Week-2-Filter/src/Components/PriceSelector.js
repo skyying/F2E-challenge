@@ -9,6 +9,7 @@ export default class PriceSelector extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(value) {
+        this.props.onChange(value);
         console.log("current", value);
     }
     render() {
