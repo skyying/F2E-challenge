@@ -1,39 +1,39 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require( "html-webpack-plugin" );
 
-const path = require("path");
-const glob = require("glob");
-const merge = require("webpack-merge");
-const parts = require("./config/webpack.parts.js");
+const path = require( "path" );
+const glob = require( "glob" );
+const merge = require( "webpack-merge" );
+const parts = require( "./config/webpack.parts.js" );
 
 const PATHS = {
-    app: path.join(__dirname, "src"),
-    build: path.resolve(__dirname, "dist"),
+    app: path.join( __dirname, "src" ),
+    build: path.resolve( __dirname, "dist" ),
 };
 
-const commonConfig = merge([
+const commonConfig = merge( [
     {
         plugins: [
-            new HtmlWebpackPlugin({
+            new HtmlWebpackPlugin( {
                 title: "webpack demo",
                 template: "./src/index.html",
-            }),
+            } ),
         ],
     },
-    parts.loadJavaScript({include: PATHS.app}),
-]);
+    parts.loadJavaScript( {include: PATHS.app} ),
+] );
 
 
-const productionConfig = merge([
+const productionConfig = merge( [
     {
         output: {
             chunkFilename: "[name].[chunkhash:4].js",
             filename: "[name].[chunkhash:4].js",
         },
-        recordsPath: path.resolve(__dirname, "records.json"),
+        recordsPath: path.resolve( __dirname, "records.json" ),
     },
-    parts.clean("dist"),
+    parts.clean( "dist" ),
     parts.minifyJavaScript(),
-    parts.minifyCSS({
+    parts.minifyCSS( {
         options: {
             discardComments: {
                 removeAll: true,
@@ -42,19 +42,19 @@ const productionConfig = merge([
             // potentially unsafe transformations.
             safe: true,
         },
-    }),
-    parts.generateSourceMaps({type: "source-map"}),
-    parts.extractCSS({}),
-    parts.purifyCSS({
-        paths: glob.sync(`${PATHS.app}/**/*.js`, {nodir: true}),
-    }),
-    parts.loadImages({
+    } ),
+    parts.generateSourceMaps( {type: "source-map"} ),
+    parts.extractCSS( {} ),
+    // parts.purifyCSS({
+    //     paths: glob.sync(`${PATHS.app}/**/*.js`, {nodir: true}),
+    // }),
+    parts.loadImages( {
         options: {
             limit: 10000,
             name: "[name].[hash:4].[ext]",
         },
-    }),
-    parts.loadSVG({}),
+    } ),
+    parts.loadSVG( {} ),
     parts.loadFonts(),
     {
         optimization: {
@@ -72,19 +72,19 @@ const productionConfig = merge([
             },
         },
     },
-]);
+] );
 
-const developmentConfig = merge([
-    parts.devServer({}),
+const developmentConfig = merge( [
+    parts.devServer( {} ),
     parts.loadCSS(),
     parts.loadImages(),
-    parts.loadSVG({}),
+    parts.loadSVG( {} ),
     parts.loadFonts(),
-]);
+] );
 
 module.exports = mode => {
-    if (mode === "production") {
-        return merge(commonConfig, productionConfig, {mode});
+    if ( mode === "production" ) {
+        return merge( commonConfig, productionConfig, {mode} );
     }
-    return merge(commonConfig, developmentConfig, {mode});
+    return merge( commonConfig, developmentConfig, {mode} );
 };

@@ -19,7 +19,7 @@
         "byName": {},
         "bySource": {},
         "usedIds": [
-          0
+          1
         ]
       }
     }
@@ -1101,7 +1101,9 @@
       "node_modules/antd/es/_util/openAnimation.js": 966,
       "node_modules/antd/es/_util/isFlexSupported.js": 967,
       "node_modules/antd/es/_util/interopDefault.js": 968,
-      "node_modules/antd/es/_util/getScroll.js": 969
+      "node_modules/antd/es/_util/getScroll.js": 969,
+      "css node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/antd.css 0": 168,
+      "node_modules/mini-css-extract-plugin/dist/loader.js!node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/antd.css": 169
     },
     "usedIds": {
       "0": 0,
@@ -2088,5 +2090,28 @@
       1,
       2
     ]
-  }
+  },
+  "mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/antd.css": [
+    {
+      "modules": {
+        "byIdentifier": {
+          "node_modules/css-loader/lib/css-base.js": 0,
+          "node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/antd.css": 1
+        },
+        "usedIds": {
+          "0": 0,
+          "1": 1
+        }
+      },
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 0
+        },
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ]
 }

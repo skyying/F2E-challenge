@@ -4,7 +4,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "font-awesome/css/font-awesome.min.css";
-import "antd/dist/antd.css";
+import "./style/antd.css";
 import "./style/style.scss";
 import App from "./App";
 // for hot reload
