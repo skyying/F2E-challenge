@@ -10,7 +10,7 @@ export default class PriceSelector extends Component {
     }
     handleChange(value) {
         this.props.onChange(value);
-        console.log("current", value);
+        // console.log("current", value);
     }
     render() {
         const {options, defaultValue} = this.props;
