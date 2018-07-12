@@ -87,7 +87,7 @@ class App extends Component {
                         openTime: result.Opentime,
                         ticketInfo: result.Ticketinfo
                             ? result.Ticketinfo
-                            : "免費或收費是個問題",
+                            : "無相關資訊",
                     } );
                 } ),
             )
