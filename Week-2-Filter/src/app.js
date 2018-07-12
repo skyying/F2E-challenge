@@ -8,6 +8,7 @@ import ResultItem from "./Components/ResultItem.js";
 import {Pagination} from "antd";
 import ZoneList from "./Components/ZoneList.js";
 const Search = Input.Search;
+
 const priceSelectorOption = ["All", "Free"];
 
 const API = {
@@ -32,6 +33,8 @@ class App extends Component {
         this.handleChangePage = this.handleChangePage.bind( this );
         this.handlePriceChange = this.handlePriceChange.bind( this );
         this.handleSearchText = this.handleSearchText.bind( this );
+        this.handleSearchInputKeyup = this.handleSearchInputKeyup.bind(this);
+        // this.handleKeyPress = this.handleKeyPress.bind( this );
     }
     componentDidMount() {
         this.fetchData();
@@ -50,10 +53,25 @@ class App extends Component {
             text: text,
         } );
     }
+    handleSearchInputKeyup( e ) {
+        console.log(e.target); 
+        console.log(e.target.value); 
+    }
     handlePriceChange( isFree ) {
         this.setState( {
             isFree: isFree === "Free",
         } );
+    }
+    // handleKeyPress( e ) {
+    //     console.log(e);
+    //     if ( e.key !== "Enter" ) {
+    //         this.setState( {
+    //             text: this.state.text + e.key,
+    //         });
+    //     }
+    // }
+    handleTextChange(e){
+        console.log(e);
     }
     fetchData() {
         fetch( API.url )
@@ -66,8 +84,10 @@ class App extends Component {
                         title: result.Name,
                         description: result.Description,
                         zone: result.Zone,
-                        OpenTime: result.Opentime,
-                        ticketInfo: result.Ticketinfo,
+                        openTime: result.Opentime,
+                        ticketInfo: result.Ticketinfo
+                            ? result.Ticketinfo
+                            : "免費或收費是個問題",
                     } );
                 } ),
             )
@@ -76,22 +96,18 @@ class App extends Component {
             } )
             .catch( error => console.log( "failed to parse: ", error ) );
     }
-
     render() {
         if ( this.state.isLoaded ) {
-            console.log( AllResult );
+            console.log( "loaded" );
         }
-
         const filterResults = () => {
             let results = AllResult;
             if ( this.state.isFree ) {
                 results = AllResult.filter( result => result.ticketInfo !== "" );
             }
-
             results = results.filter(
                 result => this.state.selectedZones.indexOf( result.zone ) !== -1,
             );
-
             const isMatch = obj => {
                 let keys = Object.keys( obj );
                 let i = 0,
@@ -107,19 +123,13 @@ class App extends Component {
                 }
                 return false;
             };
-            console.log(
-                "finalResult",
-                results.filter( result => isMatch( result ) ),
-            );
             return (
                 ( this.state.text &&
                     results.filter( result => isMatch( result ) ) ) ||
                 results
             );
         };
-
         let total = filterResults().length;
-
         const currentPageResult = () => {
             let results = filterResults();
             return (
@@ -132,49 +142,69 @@ class App extends Component {
                 []
             );
         };
-
         const results = list =>
             list.map( ( data, i ) => (
                 <ResultItem key={"result.item" + i} data={data} />
             ) );
-
         return (
-            <div>
-                <div>
-                    <h1> logo name </h1>
-                        <Search
-                            placeholder="Go where?"
-                            onSearch={this.handleSearchText}
-                            enterButton
-                        />
+            <div className="main">
+                <header className="header">
+                    <div className="header-content">
+                        <h1> Find Somewhere to Go </h1>
+                        <div className="header-search">
+                            <Search
+                                placeholder="Go where?"
+                                onSearch={this.handleSearchText}
+                                enterButton
+                                disabled={!this.state.isLoaded}
+                            />
+                        </div>
+                    </div>
+                </header>
+                <div className="main-content">
+                    <div className="sidebar">
+                        <SideViewPanel title={"Price"}>
+                            <PriceSelector
+                                onChange={this.handlePriceChange}
+                                options={priceSelectorOption}
+                                defaultValue={priceSelectorOption[0]}
+                            />
+                        </SideViewPanel>
+                        <SideViewPanel title={"Zones"}>
+                            <ZoneCheckboxGruopFilter
+                                onChange={this.handleChangeZone}
+                            />
+                        </SideViewPanel>
+                    </div>
+                    <div className="results">
+                        <div className="result-title">
+                            <h3
+                                className={
+                                    this.state.isLoaded ? "" : "loading"
+                                }>
+                                {this.state.isLoaded
+                                    ? `Expolre ${total} destinations`
+                                    : "Loading"}
+                            </h3>
+                            <TagListView
+                                tagList={this.state.text && [this.state.text]}
+                                closable={true}
+                            />
+                        </div>
+                        <div className="resultItem-panel">
+                            {this.state.isLoaded
+                                ? results( currentPageResult() )
+                                : null}
+                        </div>
+                        {this.state.isLoaded ? (
+                            <Pagination
+                                defaultCurrent={this.current}
+                                onChange={this.handleChangePage}
+                                total={total}
+                            />
+                        ) : null}
+                    </div>
                 </div>
-                <div>
-                    <SideViewPanel title={"Price"}>
-                        <PriceSelector
-                            onChange={this.handlePriceChange}
-                            options={priceSelectorOption}
-                            defaultValue={priceSelectorOption[0]}
-                        />
-                    </SideViewPanel>
-                    <SideViewPanel title={"Zones"}>
-                        <ZoneCheckboxGruopFilter
-                            onChange={this.handleChangeZone}
-                        />
-                    </SideViewPanel>
-                </div>
-                <div>
-                    <h3>Expolre {total} destinations</h3>
-                    <TagListView
-                        tagList={this.state.text && [this.state.text]}
-                        closable={true}
-                    />
-                </div>
-                <div>{results( currentPageResult() )}</div>
-                <Pagination
-                    defaultCurrent={this.current}
-                    onChange={this.handleChangePage}
-                    total={total}
-                />
             </div>
         );
     }

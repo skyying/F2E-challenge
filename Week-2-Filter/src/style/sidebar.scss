@@ -1,8 +1,8 @@
 .sidebar {
     margin: 0 auto;
+    padding-top: 10px;
     min-width: 150px;
-    width: 100%;
-    max-width: 300px;
+    width: 30%;
 }
 
 
@@ -16,9 +16,9 @@
         line-height: 57px;
         font-size: 1.2em;
         font-weight: bold;
-        padding-left: 40px;
+        padding-left: 30px;
         background: transparent;
-
+        margin-bottom: 5px;
         &:before {
             font-family: "FontAwesome";
             right: 20px;
@@ -26,7 +26,6 @@
             content: "";
         }
     }
-
     h6,
     span,
     input {
@@ -34,80 +33,52 @@
     }
 }
 
-.side-panel-date-row {
-    margin-bottom: 5px;
-}
-
-.sidebar-panel-selector {
+.ant-select{
     width: 100%;
 }
-
-.sidebar-panel-date {
-    line-height: 2;
-
-    h6 {
-        padding: 0;
-        text-align: right;
-        vertical-align: middle;
-        margin-top: 8px;
-    }
+.ant-checkbox-group label{
+    width: 45%;
+    min-width: 90px;
+    margin-top:5px;
 }
+// .sidebar-panel-lable {
+//     padding-left: 3px;
+// }
 
-.sidebar-panel-lable {
-    padding-left: 3px;
-}
-.sidebar-panel-checkbox-wrapper {
-    margin-bottom: 2px;
-}
+// .sidebar-panel-checkbox-wrapper {
+//     margin-bottom: 2px;
+// }
 
 .sidebar-panel-content {
     border-radius: $main-border-radius;
     background: $panel-bg-color;
-    padding: 36px 40px;
+    padding: 36px $main-gap;
     width: 100%;
 }
 
-@media screen and (max-width: 768px) {
 
 
-    .sidebar-panel-title {
 
-        cursor: initial; 
-
-        .h4 {
-            padding-left: 20px;
-        }
-    }
-    .sidebar-panel-content {
-        padding: 40px 20px;
-    }
-
-    .sidebar-panel-date {
-        h6 {
-            text-align: left;
-            padding-left: 20px;
-        }
+@media screen and (max-width: 800px) {
+    .sidebar {
+        width: 40%;
     }
 }
 
+
 @media screen and (max-width: 576px) {
+
     .sidebar-panel-title{
         cursor: pointer; 
     }
     .sidebar {
-        max-width: 100%;
-    }
-    .sidebar-panel-checkbox-wrapper {
-        margin-bottom: 10px;
+        width: 100%;
     }
 
     .sidebar-panel {
         margin: 0 auto 10px;
     }
 
-    .ant-calendar-picker {
-        width: 100%;
-    }
 
     .sidebar-panel--close {
         .sidebar-panel-title {

@@ -18,9 +18,9 @@ export default class PriceSelector extends Component {
             <Option key={option+"_"+i} value={option}>{option}</Option>
         ));
         return (
-            <Select defaultValue={defaultValue} onChange={this.handleChange}>
-                {optionList}
-            </Select>
+                <Select defaultValue={defaultValue} onChange={this.handleChange}>
+                    {optionList}
+                </Select>
         );
     }
 }

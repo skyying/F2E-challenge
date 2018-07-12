@@ -1,16 +1,91 @@
-.head {
+.header {
     width: 100%;
-    background: $main-grad-color; 
+    background: $main-grad-color;
 
-    h1{
+    h1 {
+        font-size: 1.5em;
         text-align: center;
-        padding-top: 40px; 
+        height: 92px;
+        padding-top: 40px;
+        width: 30%;
+    }
+
+    button {
+        background-color: #fff;
+        color: $icon-color;
+        border: none;
+        &:hover {
+            color: $icon-color-hover;
+        }
+    }
+
+    button[disabled] {
+        background-color: #f5f5f5;
+        color: $result-header-color;
+        border: none;
+        &:hover {
+            color: $result-header-color;
+        }
     }
 }
 
-.head-content {
-    height: 92px;
-    width: 100%;
-    max-width: 1200px;
+.header-search {
+    width: 70%;
+    padding-left: $main-gap;
+    input {
+        width: 100%;
+        border: none;
+        &:hover {
+            border: none;
+        }
+    }
 }
 
+.header-content {
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding-left: $main-gap;
+    padding-right: $main-gap;
+}
+
+@media screen and (max-width: 800px) {
+    .header {
+        h1 {
+            width: 40%;
+            min-width: 150px;
+        }
+        .header-search {
+            width: 60%;
+            padding-left: $min-gap;
+        }
+    }
+    .header-content {
+        padding-left: $min-gap;
+        padding-right: $min-gap;
+    }
+}
+@media screen and (max-width: 576px) {
+    .header {
+        background: transparent;
+        h1 {
+            width: 100%;
+            background: $main-grad-color;
+        }
+
+        .header-search {
+            width: 100%;
+            padding: 30px $main-gap;
+        }
+    }
+    .header-content {
+        flex-direction: column;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

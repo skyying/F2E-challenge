@@ -1,12 +1,37 @@
+
 .main-content {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    padding-left: $main-gap;
+    padding-right: $main-gap;
     padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 800px) {
   .main-content{
-        min-width: 300px;
+    padding-left: $min-gap;
+    padding-right: $min-gap;
   }
 }
+
+
+@media screen and (max-width: 576px) {
+    .main{
+        display: flex;
+        flex-wrap:  wrap;
+        flex-direction: column;
+    }
+    .main-content {
+        padding-left: $main-gap;
+        padding-right: $main-gap;
+        padding-top: 0; 
+        flex-direction: column;
+        min-width: 300px;
+    }
+    
+}
+

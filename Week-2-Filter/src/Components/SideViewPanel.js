@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 const SideViewPanel = ({title, children}) => (
-    <div className="sideview-panel">
+    <div className="sidebar-panel">
         <h4>{title}</h4>
+        <div className="sidebar-panel-content">
         {children}
+        </div>
     </div>
 );
 

@@ -16,17 +16,23 @@ InfoList.propsTypes ={
 }
 
 
-
 const ResultItem = ({
     data: {url, title, description, zone, openTime, ticketInfo},
 }) => (
-    <div>
-        <img src={url}/>
-        <h4>{title}</h4>
-        <p>{description}</p>
-        <div>
-            <h5>{zone}</h5>
-            <InfoList city={openTime} date={ticketInfo} />
+    <div className="result-panel-item">
+        <div className="result-panel-left">
+            <img src={url}/>
+        </div>
+        <div className="result-panel-right">
+            <h4>{title}</h4>
+            <div className="description-wrapper">
+                <div className="discription">{description}</div>
+                <div className="ellipsis">...</div>
+            </div>
+            <div>
+                <h5 className="zone-info">{zone}</h5>
+                <InfoList city={openTime} date={ticketInfo} />
+            </div>
         </div>
     </div>
 );
