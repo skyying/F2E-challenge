@@ -6,8 +6,8 @@ import ZoneCheckboxGruopFilter from "./Components/ZoneCheckboxGroup.js";
 import TagListView from "./Components/TagListView.js";
 import ResultItem from "./Components/ResultItem.js";
 import ZoneList from "./Components/ZoneList.js";
+import {SearchInput} from "./Components/SearchInput.js";
 
-const Search = Input.Search;
 const priceSelectorOption = ["All", "Free"];
 const API = {
     url:
@@ -16,8 +16,8 @@ const API = {
 const AllResult = [];
 
 class App extends Component {
-    constructor(props) {
-        super(props);
+    constructor( props ) {
+        super( props );
         this.state = {
             isLoaded: false,
             current: 1, // current page
@@ -25,41 +25,47 @@ class App extends Component {
             text: "",
             isFree: false,
         };
-        this.fetchData = this.fetchData.bind(this);
-        this.handleChangeZone = this.handleChangeZone.bind(this);
-        this.handleChangePage = this.handleChangePage.bind(this);
-        this.handlePriceChange = this.handlePriceChange.bind(this);
-        this.handleSearchText = this.handleSearchText.bind(this);
+        this.fetchData = this.fetchData.bind( this );
+        this.handleChangeZone = this.handleChangeZone.bind( this );
+        this.handleChangePage = this.handleChangePage.bind( this );
+        this.handlePriceChange = this.handlePriceChange.bind( this );
+        this.handleSearchText = this.handleSearchText.bind( this );
+        this.clearSearchText = this.clearSearchText.bind( this );
     }
     componentDidMount() {
         this.fetchData();
     }
-    handleChangePage(page) {
-        this.setState({current: page});
+    handleChangePage( page ) {
+        this.setState( {current: page} );
     }
-    handleChangeZone(zone) {
-        this.setState({
+    handleChangeZone( zone ) {
+        this.setState( {
             selectedZones: zone,
             current: 1,
-        });
+        } );
     }
-    handleSearchText(text) {
-        this.setState({
+    handleSearchText( text ) {
+        this.setState( {
             text: text,
-        });
+        } );
     }
-    handlePriceChange(isFree) {
-        this.setState({
+    handlePriceChange( isFree ) {
+        this.setState( {
             isFree: isFree === "Free",
-        });
+        } );
+    }
+    clearSearchText() {
+        this.setState( {
+            text: "",
+        } );
     }
     fetchData() {
-        fetch(API.url)
-            .then(response => response.json())
-            .then(data => data.result.records)
-            .then(records =>
-                records.map(result => {
-                    AllResult.push({
+        fetch( API.url )
+            .then( response => response.json() )
+            .then( data => data.result.records )
+            .then( records =>
+                records.map( result => {
+                    AllResult.push( {
                         url: result.Picture1,
                         title: result.Name,
                         description: result.Description,
@@ -69,36 +75,35 @@ class App extends Component {
                             ? result.Ticketinfo
                             : "無相關資訊",
                         isFree: !!result.Ticketinfo.length,
-                    });
-                }),
+                    } );
+                } ),
             )
-            .then(records => {
-                this.setState({isLoaded: true});
-            })
-            .catch(error => console.log("Failed to parse: ", error));
+            .then( records => {
+                this.setState( {isLoaded: true} );
+            } )
+            .catch( error => console.log( "Failed to parse: ", error ) );
     }
     render() {
         const filterResults = () => {
-
             let {selectedZones, text, isFree} = this.state;
 
             let results = AllResult;
 
-            if (isFree) {
-                results = AllResult.filter(result => result.isFree);
+            if ( isFree ) {
+                results = AllResult.filter( result => result.isFree );
             }
             results = results.filter(
-                result => selectedZones.indexOf(result.zone) !== -1,
+                result => selectedZones.indexOf( result.zone ) !== -1,
             );
             const isMatch = obj => {
-                let keys = Object.keys(obj);
+                let keys = Object.keys( obj );
                 let i = 0,
                     len = keys.length;
-                for (; i < len; i++) {
+                for ( ; i < len; i++ ) {
                     let key = keys[i];
-                    if (typeof obj[key] === "string") {
+                    if ( typeof obj[key] === "string" ) {
                         let item = obj[key];
-                        if (item.search(text) !== -1) {
+                        if ( item.search( text ) !== -1 ) {
                             return true;
                         }
                     }
@@ -106,9 +111,7 @@ class App extends Component {
                 return false;
             };
             return (
-                (text &&
-                    results.filter(result => isMatch(result))) ||
-                results
+                ( text && results.filter( result => isMatch( result ) ) ) || results
             );
         };
 
@@ -117,20 +120,20 @@ class App extends Component {
         const currentPageResult = () => {
             let results = filterResults();
             return (
-                (results.length &&
+                ( results.length &&
                     results.filter(
-                        (result, index) =>
-                            index >= (this.state.current - 1) * 10 &&
+                        ( result, index ) =>
+                            index >= ( this.state.current - 1 ) * 10 &&
                             index < this.state.current * 10 - 1,
-                    )) ||
+                    ) ) ||
                 []
             );
         };
 
         const results = list =>
-            list.map((data, i) => (
+            list.map( ( data, i ) => (
                 <ResultItem key={"result.item" + i} data={data} />
-            ));
+            ) );
 
         return (
             <div className="main">
@@ -138,11 +141,10 @@ class App extends Component {
                     <div className="header-content">
                         <h1> Find Somewhere to Go </h1>
                         <div className="header-search">
-                            <Search
+                            <SearchInput
+                                text={this.state.text}
                                 placeholder="Go where?"
-                                onSearch={this.handleSearchText}
-                                enterButton
-                                disabled={!this.state.isLoaded}
+                                onSearchTermChange={this.handleSearchText}
                             />
                         </div>
                     </div>
@@ -175,11 +177,12 @@ class App extends Component {
                             <TagListView
                                 tagList={this.state.text && [this.state.text]}
                                 closable={true}
+                                onCloseTag={this.clearSearchText}
                             />
                         </div>
                         <div className="resultItem-panel">
                             {this.state.isLoaded
-                                ? results(currentPageResult())
+                                ? results( currentPageResult() )
                                 : null}
                         </div>
                         {this.state.isLoaded ? (
