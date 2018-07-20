@@ -1,10 +1,5 @@
-const degreeToRadian = deg => (Math.PI / 180) * deg
-
-const posofPointOnCircle = (x, y, radius, deg) => {
-    let nX = x + Math.cos(degreeToRadian(deg)) * radius,
-        nY = y + Math.sin(degreeToRadian(deg)) * radius
-    return {x: nX, y: nY}
-}
+import {degreeToRadian, posofPointOnCircle} from "./calc.js"
+import {CENTER_POS} from "./Const.js"
 
 export default class CanvasTool {
     constructor(parent) {
@@ -15,6 +10,18 @@ export default class CanvasTool {
             color: "rgba(255, 255, 255, 0.05)",
         }
         this.canvas
+    }
+    setShadow(color, blurLevel, x, y) {
+        this.ctx.shadowColor = color
+        this.ctx.shadowBlur = blurLevel
+        this.ctx.shadowOffsetX = x
+        this.ctx.shadowOffsetY = y
+    }
+    resetShadow() {
+        this.ctx.shadowColor = "rgba(255, 255, 255, 0)"
+        this.ctx.shadowOffsetX = 0
+        this.ctx.shadowOffsetY = 0
+        this.ctx.shadowBlur = 0
     }
     getCanvas() {
         this.canvas = document.createElement("canvas")
@@ -50,6 +57,7 @@ export default class CanvasTool {
     drawCircleWithDash(player) {
         let {pos, radius, dashColor} = player
         const DASH_DENSITY = radius / 14
+        this.resetShadow()
         this.ctx.beginPath()
         this.ctx.arc(pos.x, pos.y, radius, 90, 0, 2 * Math.PI)
         this.ctx.strokeStyle = dashColor
@@ -72,12 +80,9 @@ export default class CanvasTool {
         this.ctx.arc(pos.x, pos.y, innerRadius, 90, 0, 2 * Math.PI)
         this.ctx.strokeStyle = color
         this.ctx.lineWidth = LINE_WIDTH
-        this.ctx.shadowColor = glowColor
-        this.ctx.shadowBlur = innerGlowLevel
-        this.ctx.shadowOffsetX = 0
-        this.ctx.shadowOffsetY = 0
+        this.setShadow(glowColor, innerGlowLevel, 0, 0)
         this.ctx.stroke()
-        this.ctx.shadowBlur = 0
+        this.resetShadow()
     }
     drawSplitLines(player) {
         let {
@@ -86,6 +91,7 @@ export default class CanvasTool {
             splitLines,
             splitLineWidth,
             innerGlowLevel,
+            glowColor,
             angle,
         } = player
         this.ctx.beginPath()
@@ -98,12 +104,10 @@ export default class CanvasTool {
                 angle + (360 / splitLines) * i,
             )
             this.ctx.lineTo(endPos.x, endPos.y)
-            this.ctx.shadowBlur = innerGlowLevel
-            this.ctx.shadowOffsetX = 0
-            this.ctx.shadowOffsetY = 0
+            this.setShadow(glowColor, innerGlowLevel, 0, 0)
             this.ctx.lineWidth = splitLineWidth
             this.ctx.stroke()
-            this.ctx.shadowBlur = 0 // reset to default
+            this.resetShadow()
         }
     }
     drawOuterArc(player) {
@@ -140,28 +144,63 @@ export default class CanvasTool {
         this.ctx.rotate(-degreeToRadian(angle))
         this.ctx.translate(-x, -y)
     }
-    drawBullet(player, bullet) {
-        let {pos, color} = player
-        let {x, y} = posofPointOnCircle(
-            pos.x,
-            pos.y,
-            bullet.currentRadius,
-            bullet.angle,
-        )
+    drawTriangle(shape) {
+        let {pos, shadowColor, angle, width, height, color} = shape
+        let {x, y} = pos,
+            hw = width / 2,
+            hh = height / 2
+        let ox = 0,
+            oy = 0,
+            na = degreeToRadian(angle - 180)
+        this.ctx.translate(x, y)
+        this.ctx.rotate(na)
         this.ctx.beginPath()
-        this.ctx.arc(x, y, bullet.size, 90, 0, 2 * Math.PI)
+        this.ctx.moveTo(ox + width, oy)
+        this.ctx.lineTo(ox, oy - hh)
+        this.ctx.lineTo(ox, oy + hh)
+        this.ctx.closePath()
         this.ctx.fillStyle = color
+        // this.setShadow(shadowColor, 0, -10, -5)  //shadowEffect
         this.ctx.fill()
+        this.ctx.rotate(-na)
+        this.ctx.translate(-x, -y)
     }
-    draw(player, list) {
+    drawBullet(emitter) {
+        let {bulletList, bulletSize} = emitter
+        for (let i = 0; i < bulletList.length; i++) {
+            let bullet = bulletList[i].pos
+            let {x, y} = bullet
+            this.ctx.beginPath()
+            this.ctx.arc(x, y, bulletSize, 90, 0, 2 * Math.PI)
+            this.ctx.fillStyle = bullet.color
+            this.ctx.fill()
+        }
+    }
+    drawPlayer(player) {
         this.drawGridBg()
         this.drawCircleWithDash(player)
         this.drawCircleWithGlow(player)
         this.drawSplitLines(player)
         this.drawOuterArc(player)
         this.drawBulletHead(player)
-        for (let i = 0; i < list.length; i++) {
-            this.drawBullet(player, list[i])
+        this.drawBullet(player)
+    }
+    drawEnemy(enemy) {
+
+        // remove this
+        // this.ctx.beginPath()
+        // this.ctx.arc(CENTER_POS.x , CENTER_POS.y, enemy.radius, 90, 0, 2 * Math.PI)
+        // this.ctx.strokeStyle = "#fff"
+        // this.ctx.stroke()
+        
+
+
+        if (enemy.shape === "triangle") {
+            this.drawTriangle(enemy)
         }
+        this.drawBullet(enemy)
+    }
+    drawEnemies(list) {
+        list.forEach(enemy => this.drawEnemy(enemy))
     }
 }
