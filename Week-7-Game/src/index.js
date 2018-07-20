@@ -2,10 +2,12 @@ import "./style/main.scss"
 import React, {Component} from "react"
 import ReactDOM from "react-dom"
 import Player from "./components/Player.js"
-import Bullet from "./components/Bullet.js"
 import CanvasTool from "./components/Canvas.js"
+import {SplitEnemy} from "./components/enemy.js"
+import {Game} from "./Game.js"
 
 const playerBulletList = []
+const enemyList = []
 
 class App extends Component {
     constructor(props) {
@@ -18,44 +20,30 @@ class App extends Component {
 }
 ReactDOM.render(<App />, document.getElementById("main"))
 
-let player = new Player()
+let game = new Game()
 let cns = new CanvasTool(document.getElementById("main"))
-
-const emitBullet = list => {
-    list.push(new Bullet(player.radius, player.angle))
-}
-
-const flyover = list => {
-    for (let i = 0; i < list.length; i++) {
-        let b = list[i]
-        b.currentRadius += 8
-        if (b.currentRadius > window.innerWidth) {
-            list.splice(i, 1)
-        }
-    }
-}
 
 let start = new Date().getTime()
 const update = () => {
     let current = new Date().getTime(),
         dt = current - start,
-        delay = 1 
+        delay = 1
     if (dt >= delay) {
-        flyover(playerBulletList)
+        game.moveBullet()
         start = new Date().getTime()
     }
     cns.clear()
-    cns.draw(player, playerBulletList)
+    game.draw(cns)
     requestAnimationFrame(update)
 }
 
 document.addEventListener("keydown", e => {
     if (e.code === "ArrowLeft" || e.code === "KeyH") {
-        player.angle -= 10
+        game.player.angle -= 10
     } else if (e.code === "ArrowRight" || e.code === "KeyL") {
-        player.angle += 10
-    } else if (e.code === "Space") {
-        emitBullet(playerBulletList)
+        game.player.angle += 10
+    } else if (e.code === "Space" || e.code === "KeyW") {
+        game.player.emit()
     }
 })
 
