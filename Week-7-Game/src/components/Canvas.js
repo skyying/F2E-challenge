@@ -145,19 +145,15 @@ export default class CanvasTool {
         this.ctx.translate(-x, -y)
     }
     drawTriangle(shape) {
-        let {pos, shadowColor, angle, width, height, color} = shape
-        let {x, y} = pos,
-            hw = width / 2,
-            hh = height / 2
-        let ox = 0,
-            oy = 0,
+        let {pos, shadowColor, angle, color, coordinates} = shape
+        let {x, y} = pos, [[x1, y1], [x2, y2], [x3, y3]] = coordinates,
             na = degreeToRadian(angle - 180)
         this.ctx.translate(x, y)
         this.ctx.rotate(na)
         this.ctx.beginPath()
-        this.ctx.moveTo(ox + width, oy)
-        this.ctx.lineTo(ox, oy - hh)
-        this.ctx.lineTo(ox, oy + hh)
+        this.ctx.moveTo(x1, y1)
+        this.ctx.lineTo(x2, y2)
+        this.ctx.lineTo(x3, y3)
         this.ctx.closePath()
         this.ctx.fillStyle = color
         // this.setShadow(shadowColor, 0, -10, -5)  //shadowEffect
