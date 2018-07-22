@@ -1,0 +1,106 @@
+{
+  "html-webpack-plugin for \"index.html\"": [
+    {
+      "modules": {
+        "byIdentifier": {
+          "node_modules/html-webpack-plugin/lib/loader.js!src/index.html": 0,
+          "node_modules/lodash/lodash.js": 1,
+          "node_modules/webpack/buildin/global.js": 2,
+          "node_modules/webpack/buildin/module.js": 3
+        },
+        "usedIds": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3
+        }
+      },
+      "chunks": {
+        "byName": {},
+        "bySource": {},
+        "usedIds": [
+          1
+        ]
+      }
+    }
+  ],
+  "mini-css-extract-plugin node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/main.scss": [
+    {
+      "modules": {
+        "byIdentifier": {
+          "node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/main.scss": 0,
+          "node_modules/css-loader/lib/css-base.js": 1
+        },
+        "usedIds": {
+          "0": 0,
+          "1": 1
+        }
+      },
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 0
+        },
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "modules": {
+    "byIdentifier": {
+      "node_modules/react/index.js": 0,
+      "node_modules/object-assign/index.js": 1,
+      "node_modules/fbjs/lib/invariant.js": 2,
+      "node_modules/fbjs/lib/emptyObject.js": 3,
+      "node_modules/fbjs/lib/emptyFunction.js": 4,
+      "node_modules/react-dom/index.js": 5,
+      "node_modules/mini-css-extract-plugin/dist/loader.js!node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/main.scss": 6,
+      "css node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/main.scss 0": 7,
+      "css node_modules/css-loader/index.js!node_modules/fast-sass-loader/lib/index.js!src/style/main.scss 1": 8,
+      "node_modules/react/cjs/react.production.min.js": 9,
+      "node_modules/react-dom/cjs/react-dom.production.min.js": 10,
+      "node_modules/fbjs/lib/ExecutionEnvironment.js": 11,
+      "node_modules/fbjs/lib/getActiveElement.js": 12,
+      "node_modules/fbjs/lib/shallowEqual.js": 13,
+      "node_modules/fbjs/lib/containsNode.js": 14,
+      "node_modules/fbjs/lib/isTextNode.js": 15,
+      "node_modules/fbjs/lib/isNode.js": 16,
+      "node_modules/babel-loader/lib/index.js!src/index.js 36aa431d4c6750f5a9a861e00f323377": 17,
+      "node_modules/babel-loader/lib/index.js!src/index.js 8cb4cb1ee97487e0970a579958922e67": 17
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8,
+      "9": 9,
+      "10": 10,
+      "11": 11,
+      "12": 12,
+      "13": 13,
+      "14": 14,
+      "15": 15,
+      "16": 16,
+      "17": 17
+    }
+  },
+  "chunks": {
+    "byName": {
+      "main": 0,
+      "vendor": 1,
+      "manifest": 2
+    },
+    "bySource": {},
+    "usedIds": [
+      0,
+      1,
+      2
+    ]
+  }
+}
