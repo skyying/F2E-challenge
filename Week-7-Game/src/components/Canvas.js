@@ -1,3 +1,4 @@
+import Vector from "./vector.js"
 import {degreeToRadian, posofPointOnCircle} from "./calc.js"
 import {CENTER_POS} from "./Const.js"
 
@@ -10,6 +11,30 @@ export default class CanvasTool {
             color: "rgba(255, 255, 255, 0.05)",
         }
         this.canvas
+        this.drawShape = {
+            Circle: function(ctx, {pos, radius, isFill, lineWidth, color}) {
+                ctx.beginPath()
+                ctx.arc(pos.x, pos.y, radius, 90, 0, 2 * Math.PI)
+                if (isFill) {
+                    ctx.fillStyle = color
+                    ctx.fill()
+                } else {
+                    ctx.strokeStyle = color
+                    ctx.lineWidth = lineWidth
+                    ctx.stroke()
+                }
+            },
+            Polygon: function(ctx, {coordinate, color}) {
+                ctx.beginPath()
+                ctx.moveTo(coordinate[0].x, coordinate[0].y)
+                for (let i = 1; i < coordinate.length; i++) {
+                    ctx.lineTo(coordinate[i].x, coordinate[i].y)
+                }
+                ctx.closePath()
+                ctx.fillStyle = color
+                ctx.fill()
+            },
+        }
     }
     setShadow(color, blurLevel, x, y) {
         this.ctx.shadowColor = color
@@ -54,6 +79,7 @@ export default class CanvasTool {
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }
+
     drawCircleWithDash(player) {
         let {pos, radius, dashColor} = player
         const DASH_DENSITY = radius / 14
@@ -123,6 +149,11 @@ export default class CanvasTool {
         this.ctx.lineWidth = outerArcWidth
         this.ctx.stroke()
     }
+    drawLanding(list) {
+        let cir = list[0]
+        
+        list.map(shape => this.drawShape[shape.type](this.ctx, shape))
+    }
     drawBulletHead(player) {
         let {pos, radius, color, angle, bulletHead} = player
         let {width, height, shrink} = bulletHead
@@ -144,10 +175,65 @@ export default class CanvasTool {
         this.ctx.rotate(-degreeToRadian(angle))
         this.ctx.translate(-x, -y)
     }
+    drawTrig(shape) {
+        let [p1, p2, p3] = shape.getVertice()
+        this.ctx.beginPath()
+        this.ctx.moveTo(p1.x, p1.y)
+        this.ctx.lineTo(p2.x, p2.y)
+        this.ctx.lineTo(p3.x, p3.y)
+        this.ctx.closePath()
+        this.ctx.fillStyle = "red"
+        this.ctx.fill()
+
+        let {pos} = shape
+        this.ctx.fillStyle = "white"
+        this.ctx.fillRect(pos.x, pos.y, 10, 10)
+    }
+    test(player) {
+        // wall
+        let origin = {x: 100, y: 200}
+        let mouseVec = new Vector(mx, my, origin);
+        (mouseVec.pos.x = mx), (mouseVec.pos.y = my)
+        let wall = new Vector(200, 100, origin)
+        this.line(wall.origin, wall.pos)
+        this.line(mouseVec.pos, origin, "green")
+
+        if (wall.collide(mouseVec)) {
+            this.line(wall.origin, wall.pos, "red")
+        }
+
+        // for(let i = 0; i < bulletList.length; i++ ){
+        //     let bullet = bulletList[i];
+        //     let circleVec = new Vector(bullet.pos.x, bullet.pos.y, origin)
+        //     let prj_v = circleVec.project(v1)
+        // this.line(prj_v.pos, circleVec.pos, "red")
+        // if(v1.collide(bullet, this)){
+        //     bulletList.splice(i, 1)
+        // }
+        // }
+    }
+    line(p1, p2, color = "white") {
+        this.ctx.beginPath()
+        this.ctx.strokeStyle = color
+        this.ctx.moveTo(p1.x, p1.y)
+        this.ctx.lineWidth = 3
+        this.ctx.lineTo(p2.x, p2.y)
+        this.ctx.closePath()
+        this.ctx.stroke()
+    }
     drawTriangle(shape) {
-        let {pos, shadowColor, angle, color, coordinates} = shape
-        let {x, y} = pos, [[x1, y1], [x2, y2], [x3, y3]] = coordinates,
-            na = degreeToRadian(angle - 180)
+        let {
+            pos,
+            shadowColor,
+            angle,
+            color,
+            coordinatesForDraw,
+            offsetAngle,
+        } = shape
+        let {x, y} = pos,
+            [[x1, y1], [x2, y2], [x3, y3]] = coordinatesForDraw,
+            na = degreeToRadian(angle - offsetAngle)
+
         this.ctx.translate(x, y)
         this.ctx.rotate(na)
         this.ctx.beginPath()
@@ -160,6 +246,20 @@ export default class CanvasTool {
         this.ctx.fill()
         this.ctx.rotate(-na)
         this.ctx.translate(-x, -y)
+
+        // should be rmoeve
+
+        // should be remove
+
+        // let [p1, p2, p3] = shape.verticeAftrRotate()
+        // console.log(p1, p2, p3);
+        // this.ctx.beginPath()
+        // this.ctx.moveTo(p1.x, p1.y)
+        // this.ctx.lineTo(p2.x, p2.y)
+        // this.ctx.lineTo(p3.x, p3.y)
+        // this.ctx.closePath()
+        // this.ctx.fillStyle = "green"
+        // this.ctx.fill()
     }
     drawBullet(emitter) {
         let {bulletList, bulletSize} = emitter
@@ -182,17 +282,15 @@ export default class CanvasTool {
         this.drawBullet(player)
     }
     drawEnemy(enemy) {
-
         // remove this
         // this.ctx.beginPath()
         // this.ctx.arc(CENTER_POS.x , CENTER_POS.y, enemy.radius, 90, 0, 2 * Math.PI)
         // this.ctx.strokeStyle = "#fff"
         // this.ctx.stroke()
-        
-
 
         if (enemy.shape === "triangle") {
             this.drawTriangle(enemy)
+            // this.drawTrig(enemy)
         }
         this.drawBullet(enemy)
     }
@@ -200,3 +298,15 @@ export default class CanvasTool {
         list.forEach(enemy => this.drawEnemy(enemy))
     }
 }
+// var v2 = new Vector(2, 3, {x: 0, y: 0})
+// testcode
+
+let mx, my
+window.addEventListener(
+    "mousemove",
+    function(e) {
+        mx = e.clientX
+        my = e.clientY
+    },
+    false,
+)

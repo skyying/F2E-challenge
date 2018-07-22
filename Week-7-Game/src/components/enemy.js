@@ -1,12 +1,19 @@
-import {degreeToRadian, getRandomInt, posofPointOnCircle} from "./calc.js"
+import {
+    degreeToRadian,
+    getRandomInt,
+    posofPointOnCircle,
+    Distance,
+    posAfterRotate,
+} from "./calc.js"
 import {Bullet, TrigBullet} from "./Bullet.js"
 import {CENTER_POS} from "./Const.js"
 import Emitter from "./Eimtter.js"
+import Vector from "./vector.js"
 
 export default class Enemy extends Emitter {
     constructor() {
         super()
-        this.radius = 400
+        this.radius = 300
         this.life = 2
         this.isDead = this.life === 0
         this.setPos()
@@ -41,29 +48,57 @@ export class SplitEnemy extends Enemy {
         this.shadowColor = "rgba(40, 120, 204, .5)"
         this.shape = "triangle"
         this.color = "#2878CC"
+        // let traingle veritce face player at center
+        this.offsetAngle = 180
         this.width = 40
         this.bulletSize = 5
-        this.offsetX =50 
-        this.offsetY = 10 
         this.height = 50
-        this.coordinates = [
-            [this.offsetX + this.width, this.offsetY],
-            [this.offsetX, this.offsetY - (this.height / 2)],
-            [this.offsetX, this.offsetY + (this.height / 2)],
+        this.coordinatesForDraw = [
+            [this.width, 0],
+            [0, 0 - this.height / 2],
+            [0, this.height / 2],
         ]
     }
-    // if self be hit or not
-    // will examine the bullet from players
-
-    isHit(playerBulletList) {
-        // I have every bullet's position
-        // I need to check every postion of this bullet and see if they are inside this
-        // enemy's area
+    verticeAftrRotate() {
+        let vertices = []
+        for (let i = 0; i < this.getVertice().length; i++) {
+            let v = this.getVertice()[i]
+            vertices.push(posAfterRotate(this.angle))
+        }
+        return vertices
     }
-    getArea() {
-        // let {x, y} = pos, [[x1, y1], [x2, y2], [x3, y3]] = coordinates,
+    getVertice() {
+        return [
+            {
+                x: this.pos.x + this.width,
+                y: this.pos.y,
+            },
+            {
+                x: this.pos.x,
+                y: this.pos.y - this.height / 2,
+            },
+            {
+                x: this.pos.x,
+                y: this.pos.y + this.height / 2,
+            },
+        ]
     }
-
+    collide(player) {
+        let playerBulletList = player.bulletList
+        playerBulletList.forEach((bullet, i) => {
+            this.getVertice().forEach((point, j) => {
+                let nextIndex = j == 2 ? 0 : j,
+                    nextPoint = this.getVertice()[nextIndex]
+                let edge = new Vector(point.x, point.y, nextPoint)
+                if (edge.collide(bullet)) {
+                    playerBulletList.splice(i, 1)
+                    this.life -= 1;
+                    return true
+                }
+            })
+        })
+        return false
+    }
 }
 
 // helper

@@ -3,7 +3,6 @@ export const TimeOut = ({cb, ms}) => {
     const update = () => {
         let current = new Date().getTime(),
             dt = current - start
-        console.log(dt);
         if (dt > ms) {
             cb()
             start = new Date().getTime()

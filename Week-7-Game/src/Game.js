@@ -1,19 +1,25 @@
 import Player from "./components/Player.js"
 import {SplitEnemy} from "./components/enemy.js"
 import {getRandomInt, degreeToRadian} from "./components/calc.js"
+import {Triangle, HollowCircle, Circle, Polygon} from "./components/shape.js"
+
 export class Game {
     constructor() {
         this.player = this.createPlayer()
         this.levle = 0
         this.score = 0
-        this.state = {
-            loading: false,
-            playing: true,
-            over: false,
-        }
-        this.enemyList = this.createEnemey(2)
+        this.state = 0
+        this.enemyList = this.createEnemey(3)
+        this.landingShape = [new Polygon()]//, new Circle(), new Polygon()]
+        this.landingDripple = new HollowCircle()
         this.attack()
         this.approach()
+    }
+    init() {
+        this.state = 0
+    }
+    start() {
+        this.state = 1
     }
     createPlayer() {
         let player = new Player()
@@ -39,7 +45,24 @@ export class Game {
     }
     moveBullet() {
         this.player.moveBullet()
-        this.enemyList.forEach(enemy => enemy.moveBullet(-1))
+        this.enemyList.forEach(enemy => {
+            enemy.moveBullet(-1)
+            this.killEnemy()
+        })
+    }
+
+    killEnemy() {
+        if (this.enemyList.length) {
+            let list = this.enemyList.filter(enemy => enemy.life >= 0)
+            this.enemyList = list
+            this.enemyList.forEach(enemy => {
+                enemy.collide(this.player)
+            })
+        }
+    }
+    drawLanding(context) {
+        context.drawLanding(this.landingShape)
+       // context.drawDripple(this.landingDripple)
     }
     draw(context) {
         context.drawPlayer(this.player)

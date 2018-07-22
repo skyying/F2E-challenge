@@ -1,6 +1,6 @@
-import  {CENTER_POS} from "./Const.js";
-import Emitter from "./Eimtter.js";
-
+import {CENTER_POS} from "./Const.js"
+import Emitter from "./Eimtter.js"
+import {degreeToRadian} from "./calc.js"
 export default class Player extends Emitter {
     constructor(pos = CENTER_POS) {
         super()
@@ -21,5 +21,12 @@ export default class Player extends Emitter {
         this.outerArc = 80
         this.outerArcWidth = 6
         this.turnSpeed = 5
+    }
+    setAngle(mx, my) {
+        let dy = my - this.pos.y,
+            dx = mx - this.pos.x,
+            theta = Math.atan2(dy, dx)
+        theta *= 180 / Math.PI
+        this.angle = theta < 0 ? theta + 360 : theta
     }
 }

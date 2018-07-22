@@ -18,10 +18,15 @@ class App extends Component {
         return <div />
     }
 }
+
 ReactDOM.render(<App />, document.getElementById("main"))
 
 let game = new Game()
 let cns = new CanvasTool(document.getElementById("main"))
+
+game.init();
+
+
 
 let start = new Date().getTime()
 const update = () => {
@@ -33,18 +38,40 @@ const update = () => {
         start = new Date().getTime()
     }
     cns.clear()
-    game.draw(cns)
+    // game state
+    // -1: game over
+    // 0: landing
+    // 1: playing
+    if (game.state===0) {
+        game.drawLanding(cns)
+    } else if (game.state === 1) {
+        game.draw(cns)
+    } else if (game.state === -1) {
+        game.drawOver(cns)
+    }
     requestAnimationFrame(update)
 }
 
 document.addEventListener("keydown", e => {
     if (e.code === "ArrowLeft" || e.code === "KeyH") {
-        game.player.angle -= 10
+        game.player.angle -= 5
     } else if (e.code === "ArrowRight" || e.code === "KeyL") {
-        game.player.angle += 10
+        game.player.angle += 5
     } else if (e.code === "Space" || e.code === "KeyW") {
         game.player.emit()
     }
 })
+
+
+// move player
+document.addEventListener(
+    "mousemove",
+    e => {
+        let cx = e.clientX,
+            cy = e.clientY
+        game.player.setAngle(cx, cy)
+    },
+    false,
+)
 
 update()
