@@ -28,18 +28,19 @@ export default class CanvasTool {
                 ctx.beginPath()
                 ctx.moveTo(cord[0].x + pos.x, cord[0].y + pos.y)
                 for (let i = 1; i < cord.length; i++) {
-                    ctx.lineTo(
-                        cord[i].x + pos.x,
-                        cord[i].y + pos.y,
-                    )
+                    ctx.lineTo(cord[i].x + pos.x, cord[i].y + pos.y)
                 }
                 ctx.closePath()
                 ctx.fillStyle = color
                 ctx.fill()
+            },
+            Rectangle : function(ctx, {pos, width,height, color}){
+                ctx.fillStyle= color;
+                ctx.fillRect(pos.x, pos.y, width, height)
             }
         }
     }
-    clear(){
+    clear() {
         this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
     }
     setShadow(color, blurLevel, x, y) {
@@ -152,8 +153,6 @@ export default class CanvasTool {
         this.ctx.stroke()
     }
     drawLanding(list) {
-        let cir = list[0]
-
         list.map(shape => this.drawShape[shape.type](this.ctx, shape))
     }
     drawBulletHead(player) {
@@ -177,20 +176,20 @@ export default class CanvasTool {
         this.ctx.rotate(-degreeToRadian(angle))
         this.ctx.translate(-x, -y)
     }
-    drawTrig(shape) {
-        let [p1, p2, p3] = shape.getVertice()
-        this.ctx.beginPath()
-        this.ctx.moveTo(p1.x, p1.y)
-        this.ctx.lineTo(p2.x, p2.y)
-        this.ctx.lineTo(p3.x, p3.y)
-        this.ctx.closePath()
-        this.ctx.fillStyle = "red"
-        this.ctx.fill()
+    // drawTrig(shape) {
+    //     let [p1, p2, p3] = shape.getVertice()
+    //     this.ctx.beginPath()
+    //     this.ctx.moveTo(p1.x, p1.y)
+    //     this.ctx.lineTo(p2.x, p2.y)
+    //     this.ctx.lineTo(p3.x, p3.y)
+    //     this.ctx.closePath()
+    //     this.ctx.fillStyle = "red"
+    //     this.ctx.fill()
 
-        let {pos} = shape
-        this.ctx.fillStyle = "white"
-        this.ctx.fillRect(pos.x, pos.y, 10, 10)
-    }
+    //     let {pos} = shape
+    //     this.ctx.fillStyle = "white"
+    //     this.ctx.fillRect(pos.x, pos.y, 10, 10)
+    // }
     // test(player) {
     //     // wall
     //     let origin = {x: 100, y: 200}
@@ -213,6 +212,12 @@ export default class CanvasTool {
         this.ctx.lineTo(p2.x, p2.y)
         this.ctx.closePath()
         this.ctx.stroke()
+    }
+    drawEnding(info = "YOU KILL THEM ALL") {
+        this.ctx.font = "50px Roboto"
+        this.ctx.fillStyle = "white"
+        this.ctx.textAlign = "center"
+        this.ctx.fillText("HEN棒, 終於把@#$%的形狀殺光惹", window.innerWidth / 2, window.innerHeight/2)
     }
     drawTriangle(shape) {
         let {
@@ -239,19 +244,6 @@ export default class CanvasTool {
         this.ctx.fill()
         this.ctx.rotate(-na)
         this.ctx.translate(-x, -y)
-
-        // should be rmoeve
-
-        // should be remove
-
-        // let [p1, p2, p3] = shape.verticeAftrRotate()
-        // this.ctx.beginPath()
-        // this.ctx.moveTo(p1.x, p1.y)
-        // this.ctx.lineTo(p2.x, p2.y)
-        // this.ctx.lineTo(p3.x, p3.y)
-        // this.ctx.closePath()
-        // this.ctx.fillStyle = "green"
-        // this.ctx.fill()
     }
     drawBullet(emitter) {
         let {bulletList, bulletSize} = emitter
@@ -274,31 +266,20 @@ export default class CanvasTool {
         this.drawBullet(player)
     }
     drawEnemy(enemy) {
-        // remove this
-        // this.ctx.beginPath()
-        // this.ctx.arc(CENTER_POS.x , CENTER_POS.y, enemy.radius, 90, 0, 2 * Math.PI)
-        // this.ctx.strokeStyle = "#fff"
-        // this.ctx.stroke()
-
-        if (enemy.shape === "triangle") {
-            this.drawTriangle(enemy)
-            // this.drawTrig(enemy)
-        }
+        this.drawShape[enemy.type](this.ctx, enemy)
         this.drawBullet(enemy)
+    }
+    drawPlayingScene(){
+        this.drawShape["Rectangle"](this.ctx, {
+            pos: {x: window.innerWidth - 400, y: 50} ,
+            color: "#F6AF5F",
+            width: 300,
+            height: 30
+        })
+    
     }
     drawEnemies(list) {
         list.forEach(enemy => this.drawEnemy(enemy))
     }
-}
-// var v2 = new Vector(2, 3, {x: 0, y: 0})
-// testcode
 
-// let mx, my
-// window.addEventListener(
-//     "mousemove",
-//     function(e) {
-//         mx = e.clientX
-//         my = e.clientY
-//     },
-//     false,
-// )
+}

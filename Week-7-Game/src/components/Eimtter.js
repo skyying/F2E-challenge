@@ -8,7 +8,7 @@ export default class Emitter {
         this.pos = pos
         this.angle = getRandomInt(0, 360);
         this.bulletList = []
-        this.emitInterval = getRandomInt(1, 2)
+        this.emitInterval = getRandomInt(2, 4)
         this.isDead = false
         this.life = 3
         this.isHit = false

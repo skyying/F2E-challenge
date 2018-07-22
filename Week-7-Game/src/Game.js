@@ -1,5 +1,5 @@
 import Player from "./components/Player.js"
-import {SplitEnemy} from "./components/enemy.js"
+import {PolygonEnemy, CircleEnemy, TriangleEnemey} from "./components/enemy.js"
 import {
     RandomPoint,
     getRandomInt,
@@ -15,7 +15,7 @@ export class Game {
         this.levle = 0
         this.score = 0
         this.state = 0
-        this.enemyList = this.createEnemey(3)
+        this.enemyList = []
         this.landingShape = []
         this.landingDripple = new HollowCircle()
         this.dripperList = []
@@ -28,9 +28,8 @@ export class Game {
             radius: window.innerHeight / 2 - 100,
         }
         this.landingMaxRadius = 500
-        this.attack()
+        this.createEnemey()
         this.createDripple()
-        this.approach()
         this.createLandingShape()
     }
     createLandingShape() {
@@ -48,11 +47,13 @@ export class Game {
             s3 = new Circle(cord[2])
         this.landingShape = [s1, s2, s3]
     }
-    init() {
-        this.state = 0
+    init(state) {
+        this.state = state
     }
     start() {
         this.state = 1
+        this.attack()
+        this.approach()
     }
     createDripple() {
         this.drippleList = [
@@ -83,13 +84,30 @@ export class Game {
         let player = new Player()
         return player
     }
-    createEnemey(n) {
-        let list = []
-        for (let i = 0; i < n; i++) {
-            let eny = new SplitEnemy()
-            list.push(eny)
-        }
-        return list
+    createEnemey(p = 0, t =0, c = 1) {
+        let len = p + t + c,
+            mapList = ("p".repeat(p) + "t".repeat(t) + "c".repeat(c)).split("")
+
+        let angleInterval,
+            angleSum = 0,
+            margin = 50,
+            defualtAngle = 360 / len
+
+        let list= mapList.map(letter => {
+            angleInterval = getRandomInt(
+                defualtAngle - margin,
+                defualtAngle + margin,
+            )
+            angleSum += angleInterval
+            if (letter === "p") {
+                return new PolygonEnemy(getRandomInt(40, 80), angleSum)
+            } else if (letter === "t") {
+                return new TriangleEnemey(getRandomInt(40, 60), angleSum)
+            } else {
+                return new CircleEnemy(getRandomInt(30, 50), angleSum)
+            }
+        })
+        this.enemyList = list
     }
     attack() {
         this.enemyList.forEach(enemy => {
@@ -124,6 +142,22 @@ export class Game {
     draw(context) {
         context.drawPlayer(this.player)
         context.drawEnemies(this.enemyList)
+        context.drawPlayingScene()
+    }
+    
+    detect(){
+        if(!this.enemyList.length){
+            this.state=-1
+        }
+    }
+    endingElement(){
+        let main = document.querySelector("#main");
+        let info = document.createElement("h3");
+        info.innerHTML = "YOU KILL THEM ALL! HEN 棒"
+        main.appendChild(info)
+    }
+    drawOver(){
+        console.log("over");     
     }
     moveLandingShape() {
         let list = this.landingShape

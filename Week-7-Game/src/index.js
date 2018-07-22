@@ -8,22 +8,22 @@ import {Game} from "./Game.js"
 
 const playerBulletList = []
 const enemyList = []
-
+let game = new Game()
 class App extends Component {
     constructor(props) {
         super(props)
-        this.state={
-            playing: false
+        this.state = {
+            game: game.state
         }
         this.start = this.start.bind(this)
     }
     start() {
         this.setState({
-            playing: true
+            playing: true,
         })
     }
     render() {
-        const content =  (
+        const content = (
             <div className="landing">
                 <div className="content">
                     <h1>R</h1>
@@ -36,18 +36,16 @@ class App extends Component {
                 </div>
             </div>
         )
-        return this.state.playing ? 
-            <div></div> 
-         : content;
+        return this.state.playing ? <div /> : content
     }
 }
 
 ReactDOM.render(<App />, document.getElementById("main"))
 
-let game = new Game()
 let cns = new CanvasTool(document.getElementById("main"))
 
-game.init()
+game.init(0)
+
 
 let start = new Date().getTime()
 const update = () => {
@@ -70,8 +68,9 @@ const update = () => {
         game.drawLanding(cns)
     } else if (game.state === 1) {
         game.draw(cns)
+        game.detect()
     } else if (game.state === -1) {
-        game.drawOver(cns)
+        cns.drawEnding()
     }
     requestAnimationFrame(update)
 }
@@ -86,14 +85,21 @@ document.addEventListener("keydown", e => {
     }
 })
 
-let startBtn = document.querySelector("a");
-startBtn.addEventListener("click" , e => {
-       game.state=1;
-       cns.clear()
+let startBtn = document.querySelector("a")
+if (startBtn) {
+    startBtn.addEventListener("click", e => {
+        game.state = 1
+        cns.clear()
+        game.start()
+    })
+}
+
+document.addEventListener("click", e => {
+    if (game.state === 1) {
+        game.player.emit()
+    }
 })
 
-
-// move player
 document.addEventListener(
     "mousemove",
     e => {

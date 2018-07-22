@@ -21,6 +21,7 @@ export default class Player extends Emitter {
         this.outerArc = 80
         this.outerArcWidth = 6
         this.turnSpeed = 5
+        this.positionRadius=90
     }
     setAngle(mx, my) {
         let dy = my - this.pos.y,

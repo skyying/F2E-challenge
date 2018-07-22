@@ -4,8 +4,8 @@ export class Bullet {
         this.size = emitter.bulletSize
         this.color = emitter.color
         this.angle = emitter.angle
-        this.currentRadius = emitter.radius
-        this.initalRadius = emitter.radius
+        this.currentRadius = emitter.positionRadius
+        this.initalRadius = emitter.positionRadius
     }
 }
 

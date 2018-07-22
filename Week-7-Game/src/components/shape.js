@@ -12,7 +12,8 @@ class shape {
 export class Circle extends shape {
     constructor(pos = CENTER_POS) {
         super();
-        (this.pos = pos), (this.isFill = true)
+        this.pos = pos
+        this.isFill = true
         this.side = 0
         this.lineWidth = 0
         this.type = "Circle"
