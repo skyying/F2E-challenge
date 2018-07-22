@@ -1,6 +1,7 @@
 import {CENTER_POS} from "./Const.js"
 import {RandomPoint ,getRandomInt} from "./calc.js"
 
+// simple shape objects for landing page
 class shape {
     constructor(pos = CENTER_POS) {
         this.color = "white"

@@ -11,6 +11,8 @@ import {CENTER_POS} from "./Const.js"
 import Emitter from "./Eimtter.js"
 import Vector from "./vector.js"
 
+
+// all kinds of enemy
 export default class Enemy extends Emitter {
     constructor() {
         super()
@@ -28,6 +30,7 @@ export default class Enemy extends Emitter {
             this.angle,
         )
     }
+    // change this enemy's postion so that they looks like they are moving
     move() {
         let start = new Date().getTime()
         const update = () => {
@@ -44,12 +47,13 @@ export default class Enemy extends Emitter {
     }
 }
 
+
 export class CircleEnemy extends Enemy {
-    constructor(radius=50, angle=getRandomInt(0, 360)) {
+    constructor(radius = 50, angle = getRandomInt(0, 360)) {
         super()
         this.isFill = true
         this.side = 0
-        this.angle=angle
+        this.angle = angle
         this.bulletSize = 6
         this.lineWidth = 0
         this.type = "Circle"
@@ -71,7 +75,7 @@ export class CircleEnemy extends Enemy {
 }
 
 export class TriangleEnemey extends Enemy {
-    constructor(radius=40, angle=getRandomInt(0, 360)) {
+    constructor(radius = 40, angle = getRandomInt(0, 360)) {
         super()
         this.radius = radius // how big the trainagle is
         this.color = "#2878cc"
@@ -87,8 +91,7 @@ export class TriangleEnemey extends Enemy {
         )
         this.cord = this.initCoordinate
         this.setPos()
-        this.bulletSize=5
-
+        this.bulletSize = 5
     }
     collide(player) {
         let playerBulletList = player.bulletList
@@ -103,9 +106,8 @@ export class TriangleEnemey extends Enemy {
     }
 }
 
-
 export class PolygonEnemy extends TriangleEnemey {
-    constructor(radius=50, angle=getRandomInt(0, 360)) {
+    constructor(radius = 50, angle = getRandomInt(0, 360)) {
         super()
         this.radius = radius
         this.color = "#E8465D"
@@ -115,7 +117,7 @@ export class PolygonEnemy extends TriangleEnemey {
         this.angle = angle
         this.sides = 6
         this.setPos()
-        this.bulletSize=5
+        this.bulletSize = 5
         this.initCoordinate = RandomPoint(
             {x: 0, y: 0},
             this.sides,
@@ -125,63 +127,3 @@ export class PolygonEnemy extends TriangleEnemey {
     }
 }
 
-
-
-// export class SplitEnemy extends Enemy {
-//     constructor() {
-//         super()
-//         this.shadowColor = "rgba(40, 120, 204, .5)"
-//         this.type = "Triangle"
-//         this.color = "#2878CC"
-//         // let traingle veritce face player at center
-//         this.offsetAngle = 180
-//         this.width = 60
-//         this.bulletSize = 5
-//         this.height = 80
-//         this.coordinatesForDraw = [
-//             [this.width, 0],
-//             [0, 0 - this.height / 2],
-//             [0, this.height / 2],
-//         ]
-//     }
-//     verticeAftrRotate() {
-//         let vertices = []
-//         for (let i = 0; i < this.getVertice().length; i++) {
-//             let v = this.getVertice()[i]
-//             vertices.push(posAfterRotate(this.angle))
-//         }
-//         return vertices
-//     }
-//     getVertice() {
-//         return [
-//             {
-//                 x: this.pos.x + this.width,
-//                 y: this.pos.y,
-//             },
-//             {
-//                 x: this.pos.x,
-//                 y: this.pos.y - this.height / 2,
-//             },
-//             {
-//                 x: this.pos.x,
-//                 y: this.pos.y + this.height / 2,
-//             },
-//         ]
-//     }
-//     collide(player) {
-//         let playerBulletList = player.bulletList
-//         playerBulletList.forEach((bullet, i) => {
-//             this.getVertice().forEach((point, j) => {
-//                 let nextIndex = j == 2 ? 0 : j,
-//                     nextPoint = this.getVertice()[nextIndex]
-//                 let edge = new Vector(point.x, point.y, nextPoint)
-//                 if (edge.collide(bullet)) {
-//                     playerBulletList.splice(i, 1)
-//                     this.life -= 1
-//                     return true
-//                 }
-//             })
-//         })
-//         return false
-//     }
-// }

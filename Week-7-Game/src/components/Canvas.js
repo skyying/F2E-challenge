@@ -2,6 +2,9 @@ import Vector from "./vector.js"
 import {degreeToRadian, posofPointOnCircle} from "./calc.js"
 import {CENTER_POS} from "./Const.js"
 
+
+
+// this object will handle all canvas drawing tasks
 export default class CanvasTool {
     constructor(parent) {
         this.parent = parent
@@ -34,10 +37,10 @@ export default class CanvasTool {
                 ctx.fillStyle = color
                 ctx.fill()
             },
-            Rectangle : function(ctx, {pos, width,height, color}){
-                ctx.fillStyle= color;
+            Rectangle: function(ctx, {pos, width, height, color}) {
+                ctx.fillStyle = color
                 ctx.fillRect(pos.x, pos.y, width, height)
-            }
+            },
         }
     }
     clear() {
@@ -176,34 +179,6 @@ export default class CanvasTool {
         this.ctx.rotate(-degreeToRadian(angle))
         this.ctx.translate(-x, -y)
     }
-    // drawTrig(shape) {
-    //     let [p1, p2, p3] = shape.getVertice()
-    //     this.ctx.beginPath()
-    //     this.ctx.moveTo(p1.x, p1.y)
-    //     this.ctx.lineTo(p2.x, p2.y)
-    //     this.ctx.lineTo(p3.x, p3.y)
-    //     this.ctx.closePath()
-    //     this.ctx.fillStyle = "red"
-    //     this.ctx.fill()
-
-    //     let {pos} = shape
-    //     this.ctx.fillStyle = "white"
-    //     this.ctx.fillRect(pos.x, pos.y, 10, 10)
-    // }
-    // test(player) {
-    //     // wall
-    //     let origin = {x: 100, y: 200}
-    //     let mouseVec = new Vector(mx, my, origin);
-    //     (mouseVec.pos.x = mx), (mouseVec.pos.y = my)
-    //     let wall = new Vector(200, 100, origin)
-    //     this.line(wall.origin, wall.pos)
-    //     this.line(mouseVec.pos, origin, "green")
-
-    //     if (wall.collide(mouseVec)) {
-    //         this.line(wall.origin, wall.pos, "red")
-    //     }
-
-    // }
     line(p1, p2, color = "white") {
         this.ctx.beginPath()
         this.ctx.strokeStyle = color
@@ -213,15 +188,19 @@ export default class CanvasTool {
         this.ctx.closePath()
         this.ctx.stroke()
     }
-    drawEnding(isLose ) {
-        let win="HEN棒, 完美, 你真有耐心",
-            lose ="TRY AGAIN? JUST REFRESH THIS PAGE"
-        let message= isLose ? lose : win
+    drawEnding(isLose) {
+        let win = "HEN棒, 完美, 你真有耐心",
+            lose = "TRY AGAIN? JUST REFRESH THIS PAGE"
+        let message = isLose ? lose : win
         this.ctx.font = "50px Roboto"
         this.ctx.fillStyle = "white"
         this.ctx.textAlign = "center"
-        
-        this.ctx.fillText(`${ message }`, window.innerWidth / 2, window.innerHeight/2)
+
+        this.ctx.fillText(
+            `${message}`,
+            window.innerWidth / 2,
+            window.innerHeight / 2,
+        )
     }
     drawTriangle(shape) {
         let {
@@ -244,7 +223,6 @@ export default class CanvasTool {
         this.ctx.lineTo(x3, y3)
         this.ctx.closePath()
         this.ctx.fillStyle = color
-        // this.setShadow(shadowColor, 0, -10, -5)  //shadowEffect
         this.ctx.fill()
         this.ctx.rotate(-na)
         this.ctx.translate(-x, -y)
@@ -273,17 +251,15 @@ export default class CanvasTool {
         this.drawShape[enemy.type](this.ctx, enemy)
         this.drawBullet(enemy)
     }
-    drawPlayingScene(){
+    drawPlayingScene() {
         this.drawShape["Rectangle"](this.ctx, {
-            pos: {x: window.innerWidth - 400, y: 50} ,
+            pos: {x: window.innerWidth - 400, y: 50},
             color: "#F6AF5F",
             width: 300,
-            height: 30
+            height: 30,
         })
-    
     }
     drawEnemies(list) {
         list.forEach(enemy => this.drawEnemy(enemy))
     }
-
 }

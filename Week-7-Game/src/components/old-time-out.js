@@ -1,3 +1,4 @@
+// i don't use this
 export const TimeOut = ({cb, ms}) => {
     let start = new Date().getTime()
     const update = () => {

@@ -1,3 +1,6 @@
+
+// some helper to calculate position and movement of shapes and objects
+
 export const degreeToRadian = deg => (Math.PI / 180) * deg
 export const posofPointOnCircle = (x, y, radius, deg) => {
     // x, y is the position of circle center
@@ -6,11 +9,14 @@ export const posofPointOnCircle = (x, y, radius, deg) => {
     return {x: nX, y: nY}
 }
 
+
 export const Distance = (p1, p2) => {
     let dx = Math.pow(p2.x - p1.x, 2),
         dy = Math.pow(p2.y - p1.y, 2)
     return Math.sqrt(dx + dy)
 }
+
+
 
 export const getTriangeArea = (p1, p2, p3) => {
     return (
@@ -26,7 +32,6 @@ export const getRandomInt = (min, max) => {
 }
 
 export const RandomPoint = (pos, sides, radius) => {
-    // should return
     let coordinate = [],
         angleInterval = 120,
         angleSume = 0,
@@ -41,9 +46,10 @@ export const RandomPoint = (pos, sides, radius) => {
     }
 
     return coordinate
-
     
 }
+
+
 
 // use degree instead of radius
 export const posAfterRotate = (pos, angle) => {
@@ -56,6 +62,8 @@ export const posAfterRotate = (pos, angle) => {
             pos.x * Math.cos(degreeToRadian(angle)),
     }
 }
+
+
 
 export const Vector = (p1, p2) => {
     return [p1.x - p2.x, p1.y - p2.y]

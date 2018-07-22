@@ -3,10 +3,13 @@ import {CENTER_POS} from "./Const.js"
 import {degreeToRadian, getRandomInt, posofPointOnCircle} from "./calc.js"
 import {TimeOut} from "./timeout.js"
 
+
+
+// a object will emmit bullet 
 export default class Emitter {
     constructor(pos = CENTER_POS) {
         this.pos = pos
-        this.angle = getRandomInt(0, 360);
+        this.angle = getRandomInt(0, 360)
         this.bulletList = []
         this.emitInterval = getRandomInt(2, 4)
         this.isDead = false
@@ -36,6 +39,8 @@ export default class Emitter {
         }
         update()
     }
+    // when bullet is add to list, then change their position so that they looks like they
+    // are moving
     moveBullet(dir = 1) {
         for (let i = 0; i < this.bulletList.length; i++) {
             let b = this.bulletList[i]
@@ -46,6 +51,7 @@ export default class Emitter {
                 b.currentRadius,
                 b.angle,
             )
+            // if they are out of boundary, just remove them
             if (b.currentRadius > window.innerWidth && this.bulletList.length) {
                 this.bulletList.splice(i, 1)
             }

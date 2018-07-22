@@ -23,6 +23,7 @@ export default class Player extends Emitter {
         this.turnSpeed = 5
         this.positionRadius=90
     }
+    // get new angle so that we can reset player's shooting direction
     setAngle(mx, my) {
         let dy = my - this.pos.y,
             dx = mx - this.pos.x,
