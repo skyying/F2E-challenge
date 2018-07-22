@@ -9,7 +9,6 @@ import {
 import {Bullet, TrigBullet} from "./Bullet.js"
 import {CENTER_POS} from "./Const.js"
 import Emitter from "./Eimtter.js"
-import Vector from "./vector.js"
 
 
 // all kinds of enemy

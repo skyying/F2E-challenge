@@ -1,4 +1,3 @@
-import Vector from "./vector.js"
 import {degreeToRadian, posofPointOnCircle} from "./calc.js"
 import {CENTER_POS} from "./Const.js"
 
