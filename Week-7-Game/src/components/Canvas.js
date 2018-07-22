@@ -213,11 +213,15 @@ export default class CanvasTool {
         this.ctx.closePath()
         this.ctx.stroke()
     }
-    drawEnding(info = "YOU KILL THEM ALL") {
+    drawEnding(isLose ) {
+        let win="HEN棒, 完美, 你真有耐心",
+            lose ="TRY AGAIN? JUST REFRESH THIS PAGE"
+        let message= isLose ? lose : win
         this.ctx.font = "50px Roboto"
         this.ctx.fillStyle = "white"
         this.ctx.textAlign = "center"
-        this.ctx.fillText("HEN棒, 終於把@#$%的形狀殺光惹", window.innerWidth / 2, window.innerHeight/2)
+        
+        this.ctx.fillText(`${ message }`, window.innerWidth / 2, window.innerHeight/2)
     }
     drawTriangle(shape) {
         let {

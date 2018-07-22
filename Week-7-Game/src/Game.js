@@ -28,7 +28,11 @@ export class Game {
             radius: window.innerHeight / 2 - 100,
         }
         this.landingMaxRadius = 500
-        this.createEnemey()
+        this.createEnemey(
+            getRandomInt(1, 3),
+            getRandomInt(1, 3),
+            getRandomInt(1, 4),
+        )
         this.createDripple()
         this.createLandingShape()
     }
@@ -84,7 +88,7 @@ export class Game {
         let player = new Player()
         return player
     }
-    createEnemey(p = 0, t =0, c = 1) {
+    createEnemey(p = 1, t = 1, c = 1) {
         let len = p + t + c,
             mapList = ("p".repeat(p) + "t".repeat(t) + "c".repeat(c)).split("")
 
@@ -93,7 +97,7 @@ export class Game {
             margin = 50,
             defualtAngle = 360 / len
 
-        let list= mapList.map(letter => {
+        let list = mapList.map(letter => {
             angleInterval = getRandomInt(
                 defualtAngle - margin,
                 defualtAngle + margin,
@@ -144,20 +148,16 @@ export class Game {
         context.drawEnemies(this.enemyList)
         context.drawPlayingScene()
     }
-    
-    detect(){
-        if(!this.enemyList.length){
-            this.state=-1
+    detect() {
+        if (!this.enemyList.length) {
+            this.state = -2
         }
-    }
-    endingElement(){
-        let main = document.querySelector("#main");
-        let info = document.createElement("h3");
-        info.innerHTML = "YOU KILL THEM ALL! HEN 棒"
-        main.appendChild(info)
-    }
-    drawOver(){
-        console.log("over");     
+        let touchedEnemy = this.enemyList.filter(
+            enemy => enemy.positionRadius <= 130,
+        ).length
+        if (touchedEnemy) {
+            this.state = -1
+        }
     }
     moveLandingShape() {
         let list = this.landingShape

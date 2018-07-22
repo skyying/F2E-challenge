@@ -69,9 +69,9 @@ const update = () => {
     } else if (game.state === 1) {
         game.draw(cns)
         game.detect()
-    } else if (game.state === -1) {
-        cns.drawEnding()
-    }
+    } else if (game.state < 0) {
+        cns.drawEnding(game.state+2)
+    } 
     requestAnimationFrame(update)
 }
 
@@ -93,6 +93,8 @@ if (startBtn) {
         game.start()
     })
 }
+
+
 
 document.addEventListener("click", e => {
     if (game.state === 1) {
