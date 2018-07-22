@@ -26,22 +26,23 @@ export const getRandomInt = (min, max) => {
 }
 
 export const RandomPoint = (pos, sides, radius) => {
+    // should return
     let coordinate = [],
-        angleInterval = 60,
-        angleSume=0,
-        margin=16
-
+        angleInterval = 120,
+        angleSume = 0,
+        margin = 16
     for (let i = 0; i < sides; i++) {
-        
-        if (sides > 3) {
-            angleInterval = getRandomInt(360 / sides - margin, 360 / sides + margin)
-            angleSume += angleInterval 
-        }
-        coordinate.push(
-            posofPointOnCircle(pos.x, pos.y, radius, angleSume),
-        )
+        angleInterval =
+            sides === 3
+                ? 120
+                : getRandomInt(360 / sides - margin, 360 / sides + margin)
+        angleSume += angleInterval
+        coordinate.push(posofPointOnCircle(0, 0, radius, angleSume))
     }
+
     return coordinate
+
+    
 }
 
 // use degree instead of radius

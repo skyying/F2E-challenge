@@ -24,11 +24,14 @@ export default class CanvasTool {
                     ctx.stroke()
                 }
             },
-            Polygon: function(ctx, {coordinate, color}) {
+            Polygon: function(ctx, {pos, cord, color}) {
                 ctx.beginPath()
-                ctx.moveTo(coordinate[0].x, coordinate[0].y)
-                for (let i = 1; i < coordinate.length; i++) {
-                    ctx.lineTo(coordinate[i].x, coordinate[i].y)
+                ctx.moveTo(cord[0].x + pos.x, cord[0].y + pos.y)
+                for (let i = 1; i < cord.length; i++) {
+                    ctx.lineTo(
+                        cord[i].x + pos.x,
+                        cord[i].y + pos.y,
+                    )
                 }
                 ctx.closePath()
                 ctx.fillStyle = color
@@ -151,7 +154,7 @@ export default class CanvasTool {
     }
     drawLanding(list) {
         let cir = list[0]
-        
+
         list.map(shape => this.drawShape[shape.type](this.ctx, shape))
     }
     drawBulletHead(player) {

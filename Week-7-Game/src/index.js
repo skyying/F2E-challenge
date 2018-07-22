@@ -24,9 +24,7 @@ ReactDOM.render(<App />, document.getElementById("main"))
 let game = new Game()
 let cns = new CanvasTool(document.getElementById("main"))
 
-game.init();
-
-
+game.init()
 
 let start = new Date().getTime()
 const update = () => {
@@ -35,6 +33,9 @@ const update = () => {
         delay = 1
     if (dt >= delay) {
         game.moveBullet()
+        // if (game.state === 0) {
+        //     game.landingAnimation()
+        // }
         start = new Date().getTime()
     }
     cns.clear()
@@ -42,7 +43,7 @@ const update = () => {
     // -1: game over
     // 0: landing
     // 1: playing
-    if (game.state===0) {
+    if (game.state === 0) {
         game.drawLanding(cns)
     } else if (game.state === 1) {
         game.draw(cns)
@@ -61,7 +62,6 @@ document.addEventListener("keydown", e => {
         game.player.emit()
     }
 })
-
 
 // move player
 document.addEventListener(
