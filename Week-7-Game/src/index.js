@@ -61,9 +61,10 @@ const update = () => {
     }
     cns.clear()
     // game state
-    // -1: game over
+    // -1: game over, user win
     // 0: landing
     // 1: playing
+    // -2: game over, user lose
     if (game.state === 0) {
         game.drawLanding(cns)
     } else if (game.state === 1) {
@@ -75,6 +76,8 @@ const update = () => {
     requestAnimationFrame(update)
 }
 
+
+// keybaord event
 document.addEventListener("keydown", e => {
     if (e.code === "ArrowLeft" || e.code === "KeyH") {
         game.player.angle -= 5
@@ -85,6 +88,7 @@ document.addEventListener("keydown", e => {
     }
 })
 
+// user click start button, start to play game 
 let startBtn = document.querySelector("a")
 if (startBtn) {
     startBtn.addEventListener("click", e => {
@@ -96,12 +100,15 @@ if (startBtn) {
 
 
 
+// detect click event if user game isn't over
 document.addEventListener("click", e => {
     if (game.state === 1) {
         game.player.emit()
     }
 })
 
+
+// let rotate player's angle alongwith mousemove event
 document.addEventListener(
     "mousemove",
     e => {
