@@ -33,9 +33,9 @@ const update = () => {
         delay = 1
     if (dt >= delay) {
         game.moveBullet()
-        // if (game.state === 0) {
-        //     game.landingAnimation()
-        // }
+        if (game.state === 0) {
+            game.landingAnimation()
+        }
         start = new Date().getTime()
     }
     cns.clear()

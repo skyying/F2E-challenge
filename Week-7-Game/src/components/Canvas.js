@@ -14,12 +14,12 @@ export default class CanvasTool {
         this.drawShape = {
             Circle: function(ctx, {pos, radius, isFill, lineWidth, color}) {
                 ctx.beginPath()
+                ctx.fillStyle = color
+                ctx.strokeStyle = color
                 ctx.arc(pos.x, pos.y, radius, 90, 0, 2 * Math.PI)
                 if (isFill) {
-                    ctx.fillStyle = color
                     ctx.fill()
                 } else {
-                    ctx.strokeStyle = color
                     ctx.lineWidth = lineWidth
                     ctx.stroke()
                 }
@@ -255,7 +255,6 @@ export default class CanvasTool {
         // should be remove
 
         // let [p1, p2, p3] = shape.verticeAftrRotate()
-        // console.log(p1, p2, p3);
         // this.ctx.beginPath()
         // this.ctx.moveTo(p1.x, p1.y)
         // this.ctx.lineTo(p2.x, p2.y)

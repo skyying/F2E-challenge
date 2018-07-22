@@ -16,7 +16,7 @@ export class Game {
         this.score = 0
         this.state = 0
         this.enemyList = this.createEnemey(3)
-        this.landingShape = [new Triangle(), new Polygon(), new Circle()] //, new Circle(), new Polygon()]
+        this.landingShape = []
         this.landingDripple = new HollowCircle()
         this.dripperList = []
         this.drippleIn = {
@@ -30,9 +30,23 @@ export class Game {
         this.landingMaxRadius = 500
         this.attack()
         this.createDripple()
-        // this.createLandingShape()
         this.approach()
-        // this.landingAnimation()
+        this.createLandingShape()
+    }
+    createLandingShape() {
+        let n = 3
+        let ww = window.innerWidth,
+            wh = window.innerHeight
+        let cord = []
+        for (let i = 0; i < n; i++) {
+            let x = getRandomInt(0, ww),
+                y = getRandomInt(0, wh)
+            cord.push({x: x, y: y})
+        }
+        let s1 = new Triangle(cord[0]),
+            s2 = new Polygon(cord[1]),
+            s3 = new Circle(cord[2])
+        this.landingShape = [s1, s2, s3]
     }
     init() {
         this.state = 0
@@ -59,6 +73,7 @@ export class Game {
         } else {
             this.drippleIn.radius = Math.abs(ww - 430)
         }
+
         this.drippleList = [
             new HollowCircle(this.drippleIn.color, this.drippleIn.radius),
             new HollowCircle(this.drippleOut.color, this.drippleOut.radius),
@@ -103,14 +118,32 @@ export class Game {
         }
     }
     drawLanding(context) {
-        this.landingShape.map((x)=> console.log(x))
         context.drawLanding(this.landingShape)
-        console.log("this.landingShape", this.landingShape);
         context.drawLanding(this.drippleList)
-        console.log("this.drippleList", this.drippleList);
     }
     draw(context) {
         context.drawPlayer(this.player)
         context.drawEnemies(this.enemyList)
+    }
+    moveLandingShape() {
+        let list = this.landingShape
+        let ww = window.innerWidth,
+            wh = window.innerHeight
+        for (let i = 0; i < list.length; i++) {
+            let shape = list[i]
+            if (shape.pos.x + 100 > ww || shape.pos.x < 0) {
+                shape.dx = -shape.dx
+            }
+            if (shape.pos.y + 100 > wh || shape.pos.y < 0) {
+                shape.dy = -shape.dy
+            }
+            let x = shape.pos.x + shape.dx
+            let y = shape.pos.y + shape.dy
+            shape.pos = {x: x, y: y}
+        }
+    }
+    landingAnimation() {
+        this.startDripple()
+        this.moveLandingShape()
     }
 }
