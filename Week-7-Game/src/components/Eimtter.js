@@ -1,7 +1,6 @@
 import {Bullet} from "./Bullet.js"
 import {CENTER_POS} from "./Const.js"
 import {degreeToRadian, getRandomInt, posofPointOnCircle} from "./calc.js"
-import {TimeOut} from "./timeout.js"
 
 
 
