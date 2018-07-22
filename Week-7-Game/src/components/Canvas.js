@@ -36,8 +36,11 @@ export default class CanvasTool {
                 ctx.closePath()
                 ctx.fillStyle = color
                 ctx.fill()
-            },
+            }
         }
+    }
+    clear(){
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
     }
     setShadow(color, blurLevel, x, y) {
         this.ctx.shadowColor = color
@@ -79,10 +82,6 @@ export default class CanvasTool {
             i++
         }
     }
-    clear() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    }
-
     drawCircleWithDash(player) {
         let {pos, radius, dashColor} = player
         const DASH_DENSITY = radius / 14
@@ -192,29 +191,20 @@ export default class CanvasTool {
         this.ctx.fillStyle = "white"
         this.ctx.fillRect(pos.x, pos.y, 10, 10)
     }
-    test(player) {
-        // wall
-        let origin = {x: 100, y: 200}
-        let mouseVec = new Vector(mx, my, origin);
-        (mouseVec.pos.x = mx), (mouseVec.pos.y = my)
-        let wall = new Vector(200, 100, origin)
-        this.line(wall.origin, wall.pos)
-        this.line(mouseVec.pos, origin, "green")
+    // test(player) {
+    //     // wall
+    //     let origin = {x: 100, y: 200}
+    //     let mouseVec = new Vector(mx, my, origin);
+    //     (mouseVec.pos.x = mx), (mouseVec.pos.y = my)
+    //     let wall = new Vector(200, 100, origin)
+    //     this.line(wall.origin, wall.pos)
+    //     this.line(mouseVec.pos, origin, "green")
 
-        if (wall.collide(mouseVec)) {
-            this.line(wall.origin, wall.pos, "red")
-        }
+    //     if (wall.collide(mouseVec)) {
+    //         this.line(wall.origin, wall.pos, "red")
+    //     }
 
-        // for(let i = 0; i < bulletList.length; i++ ){
-        //     let bullet = bulletList[i];
-        //     let circleVec = new Vector(bullet.pos.x, bullet.pos.y, origin)
-        //     let prj_v = circleVec.project(v1)
-        // this.line(prj_v.pos, circleVec.pos, "red")
-        // if(v1.collide(bullet, this)){
-        //     bulletList.splice(i, 1)
-        // }
-        // }
-    }
+    // }
     line(p1, p2, color = "white") {
         this.ctx.beginPath()
         this.ctx.strokeStyle = color
@@ -303,12 +293,12 @@ export default class CanvasTool {
 // var v2 = new Vector(2, 3, {x: 0, y: 0})
 // testcode
 
-let mx, my
-window.addEventListener(
-    "mousemove",
-    function(e) {
-        mx = e.clientX
-        my = e.clientY
-    },
-    false,
-)
+// let mx, my
+// window.addEventListener(
+//     "mousemove",
+//     function(e) {
+//         mx = e.clientX
+//         my = e.clientY
+//     },
+//     false,
+// )

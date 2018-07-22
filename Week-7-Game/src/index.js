@@ -12,10 +12,33 @@ const enemyList = []
 class App extends Component {
     constructor(props) {
         super(props)
+        this.state={
+            playing: false
+        }
+        this.start = this.start.bind(this)
     }
-    componentDidMount() {}
+    start() {
+        this.setState({
+            playing: true
+        })
+    }
     render() {
-        return <div />
+        const content =  (
+            <div className="landing">
+                <div className="content">
+                    <h1>R</h1>
+                    <h2>Radio Defense</h2>
+                    <a onClick={this.start}>Start Game</a>
+                </div>
+                <div className="notes">
+                    Press W or Space to shoot. Press Arrow Key to control
+                    direction
+                </div>
+            </div>
+        )
+        return this.state.playing ? 
+            <div></div> 
+         : content;
     }
 }
 
@@ -62,6 +85,13 @@ document.addEventListener("keydown", e => {
         game.player.emit()
     }
 })
+
+let startBtn = document.querySelector("a");
+startBtn.addEventListener("click" , e => {
+       game.state=1;
+       cns.clear()
+})
+
 
 // move player
 document.addEventListener(
