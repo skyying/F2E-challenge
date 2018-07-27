@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,
+    100,
+    100italic,
+    300,
+    300italic,
+    400italic,
+    500,
+    500italic,
+    700,
+    700italic,
+    900italic,
+    900");
+
+$instruction-color: #0027c8;
+$bg-color: #1469ff;
+
+body {
+    background-color: $bg-color;
+    font-family: "Roboto";
+}
+
+
+.tri2 {
+    transform: rotate(180deg);
+    transform-origin: center center;
+}
+.title-container {
+    width: 100%;
+    height: 100%;
+}
+
+.pos-abs {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.opening{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    z-index: 5000;
+    color: white;
+    justify-content: center;
+    h1 {
+        font-size: 5em;
+        font-weight: 600;
+    }
+    > p {
+        font-size: 1.8em;
+        text-align: center;
+        font-weight: 100;
+    }
+}
+
+
+.secondBg {
+    background-color: #0027c8;
+}
+

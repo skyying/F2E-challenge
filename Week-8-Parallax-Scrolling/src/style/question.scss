@@ -1,0 +1,87 @@
+$title-color: #ff3c82;
+$problem-text-color: #fff;
+$instruction-color: #0027c8;
+$gap: 30px;
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.trig {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    bottom: -200px;
+    right: -50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+}
+
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+.q-wrapper {
+    position: absolute;
+    height: 100%;
+    transform: translate(0 -50%);
+    display: flex;
+    width: calc(100% - 500px);
+    justify-content: center;
+    align-items: center;
+}
+
+.questionnaire {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    line-height: 1.5;
+    h2 {
+        align-self: flex-start;
+        color: $title-color;
+        font-size: 4.5em;
+    }
+    p {
+        color: $problem-text-color;
+        font-size: 2em;
+        font-weight: 500;
+    }
+    span {
+        display: block;
+        font-size: 1.5em;
+        color: $instruction-color;
+        font-weight: 200;
+        padding-top: $gap;
+        padding-bottom: $gap + 20px;
+    }
+}
+
+
+.secondary {
+    h2{
+        color: #fff;
+    }
+    p, span{
+        color: #000;
+    }
+}
+
+.pos-right {
+    left: 500px;
+}
