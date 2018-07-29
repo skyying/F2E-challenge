@@ -7,6 +7,7 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import Opening from "./comp/opening.js";
 import QuestionPage from "./comp/question.js";
+// import ScrollAnim from "./comp/ScrollAnim.js";
 
 class App extends Component {
     constructor(props) {
@@ -64,4 +65,3 @@ class App extends Component {
     }
 }
 ReactDOM.render(<App />, document.getElementById("main"));
-

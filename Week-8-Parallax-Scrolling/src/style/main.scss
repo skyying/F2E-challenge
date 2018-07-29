@@ -14,11 +14,13 @@
 $instruction-color: #0027c8;
 $bg-color: #1469ff;
 
+html {
+    height: 400vh;
+}
 body {
     background-color: $bg-color;
     font-family: "Roboto";
 }
-
 
 .tri2 {
     transform: rotate(180deg);
@@ -37,12 +39,10 @@ body {
     height: 100%;
 }
 
-
-.opening{
+.opening {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 .flex-center {
     display: flex;
@@ -67,8 +67,6 @@ body {
     }
 }
 
-
 .secondBg {
     background-color: #0027c8;
 }
-
