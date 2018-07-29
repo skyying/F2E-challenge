@@ -44,7 +44,7 @@ export default class SidebarShapes extends Component {
             ease: Sine.easeIn,
         });
 
-        // todo should change appear order base on they y value
+        // todo should change appear order base on their y value
         timeline.to(square, 1, {
             attr: {y: data.square.pos.y},
             ease: Sine.easeInOut,
