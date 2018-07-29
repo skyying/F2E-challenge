@@ -1,13 +1,10 @@
 import "./style/reset.scss";
 import "./style/main.scss";
 import "./style/question.scss";
-import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import Opening from "./comp/opening.js";
 import QuestionPage from "./comp/question.js";
-// import ScrollAnim from "./comp/ScrollAnim.js";
 
 class App extends Component {
     constructor(props) {

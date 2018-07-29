@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import {Button} from "./common.js";
-import {TweenMax, TimelineMax, TimelineLite} from "gsap/TweenMax";
+import {TweenMax, TimelineMax} from "gsap/TweenMax";
 import Triangle from "./triangle.js";
 import {ShapeData} from "./shapeData.js";
 
@@ -119,7 +119,6 @@ export default class SidebarShapes extends Component {
             wh = window.innerHeight;
 
         const data = ShapeData[this.props.stage];
-        console.log("data---left", data);
 
         return (
             <div className="pos-abs">

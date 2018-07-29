@@ -4,7 +4,6 @@ import {ShapeData} from "./shapeData.js";
 
 
 // Sliding page effect
-
 export default class TransitionBg extends Component {
     constructor(props) {
         super(props);

@@ -1,4 +1,3 @@
-
 export const QuestionData = {
     1: {
         id: 1,

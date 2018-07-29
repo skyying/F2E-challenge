@@ -21,7 +21,6 @@ class Question extends Component {
             this.play();
         }
     }
-
     play() {
         let qContent = this.refs.qContent;
         if (this.props.stage === 2) {
@@ -88,7 +87,6 @@ export default class QuestionPage extends Component {
             stage: this.props.stage,
             playTransition: true,
             playSidebar: false,
-            // playSidebar: false,
         };
         this.next = this.next.bind(this);
         this.playSidebarAnim = this.playSidebarAnim.bind(this);

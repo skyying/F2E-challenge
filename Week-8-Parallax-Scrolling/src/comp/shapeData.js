@@ -2,7 +2,6 @@ const ww = window.innerWidth,
     wh = window.innerHeight,
     sw = Math.max(ww * 0.3, 500);
 
-
 // animation param for sidebar shapes
 export const ShapeData = {
     0: {
@@ -25,7 +24,7 @@ export const ShapeData = {
     },
     1: {
         id: 1,
-        left: false, 
+        left: false,
         bg: {
             fill: "#0027C8",
             size: sw,
@@ -121,7 +120,7 @@ export const ShapeData = {
         id: 3,
         left: false,
         bg: {
-            fill: "#1469FF", 
+            fill: "#1469FF",
             size: sw,
             from: {
                 x: 0,
@@ -135,7 +134,7 @@ export const ShapeData = {
             },
         },
         rect: {
-            fill:"#ff3c82",
+            fill: "#ff3c82",
             from: {
                 x: 0,
             },

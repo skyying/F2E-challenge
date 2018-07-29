@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
-import ReactDOM from "react-dom";
 
 class Star extends Component {
     constructor(props) {
